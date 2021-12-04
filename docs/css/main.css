@@ -1,0 +1,314 @@
+:root
+{
+  /* My color pallete to use in all site. */
+  /*--bgreen: #329DAF;*/
+  /*--bblue: #205072;*/
+  --bgreen: #667066;
+  --bblue: #555566;
+  --blightgray: #F7F7F7;
+  --bgray: #F1F1F1;
+  --bwhite: #FFFFFF;
+  --bblack: #000000;
+}
+
+.dark-mode
+{
+  --bgreen: #535e53;
+  --bblue: #5a5a63;
+  --blightgray: #111111;
+  --bgray: #333333;
+  --bwhite: #000000;
+  --bblack: #7c7c7c;
+}
+
+html
+{
+  /*background-color: var(--blightgray);*/
+}
+
+body
+{
+    background-color: var(--bwhite);
+    color: var(--bblack);
+    width: 800px;
+    margin: 10px auto;
+    padding: 20px;
+    text-align: justify;
+    line-height: 1.6;
+
+    font-family: 'Darker Grotesque', serif;
+    font-size: 22px;
+
+}
+
+@media only screen and (max-width: 600px)
+{
+  body
+  {
+    width: inherit;
+    margin: 0px 0px;
+    padding: 8px;
+    padding-top: 30px;
+    font-size: 22px;
+    line-height: 1.4;
+  }
+  .fa
+  {
+    transform: scale(1.2);
+    padding: 6px;
+  }
+  .contactinfo
+  {
+    font-size: 16px;
+  }
+}
+
+ul
+{
+  width: inherit;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: var(--blightgray);
+  z-index: 2;
+  position: fixed;
+  top: 0;
+}
+
+li
+{
+  float: left;
+}
+
+li a {
+  display: block;
+  color: var(--bwhite);
+  text-align: center;
+  padding: 14px 26px;
+  text-decoration: none;
+}
+
+li a:hover {
+  background-color: var(--bgray);
+}
+
+.active {
+  background-color: var(--bgray);
+}
+
+/*li {
+  border-right: 1px solid white;
+}
+
+li:last-child {
+  border-right: none;
+}*/
+
+.titlename{
+  text-align: center;
+  color: var(--bblue);
+}
+
+.myinfo
+{
+  display: flex;
+  align-items: center;
+}
+
+.mypic-wrapper
+{
+    position: relative;
+    float: left;
+    width: 40%;
+}
+
+.mypicblur
+{
+  width: 100%;
+  filter: blur(1px) grayscale(100%);
+  -webkit-filter: blur(1px) grayscale(100%);
+  z-index: -1;
+  /*border: 2px solid var(--bblue);*/
+}
+
+.mypicblur:hover
+{
+  filter: grayscale(100%);
+}
+
+.mypic
+{
+    filter: grayscale(100%);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    /* very good site to make the clip-path in %
+    You can create a phyton simpleserver in the directory of your site(or image), and place the url to the image in his site:
+    https://bennettfeely.com/clippy/ */
+    clip-path: polygon(14% 100%, 17% 94%, 25% 79%, 28% 81%, 34% 75%, 35% 72%, 40% 68%, 40% 65%, 39% 51%, 39% 37%, 42% 28%, 48% 24%, 53% 26%,
+      56% 31%, 58% 39%, 58% 49%, 59% 50%, 58% 58%, 57% 66%, 56% 70%, 57% 73%, 59% 76%, 61% 78%, 62% 81%, 65% 89%, 66% 100%);
+    z-index: 0;
+    /*border: 2px solid var(--bblue);*/
+}
+
+/*.mypic:hover
+{
+  transform: translateY(-10px) scale(1.1);
+  transition: 1s;
+}*/
+
+.contactinfo
+{
+  width: 60%;
+  text-align: right;
+}
+
+.decorated-title
+{
+    color: var(--bgreen);
+     overflow: hidden;
+     text-align: left;
+     /*border-top: 1px solid var(--bgreen);*/
+     border-bottom: 1px solid var(--bgreen);
+}
+
+/*.decorated-title > span
+{
+    position: relative;
+    display: inline-block;
+}
+.decorated-title > span:before, .decorated-title > span:after
+{
+    content: '';
+    position: absolute;
+    top: 64%;
+    border-bottom: 1px solid;
+    width: 100vw;
+    margin: 0 20px;
+    color: var(--bblue)
+
+}
+.decorated-title > span:before
+{
+    right: 100%;
+}
+.decorated-title > span:after
+{
+    left: 100%;
+}*/
+
+.svg-tn
+{
+  float: left; 
+  padding: 6px; 
+  margin: 4px; 
+  width: 50%; 
+  background-color: var(--blightgray);
+}
+
+body.dark-mode .svg-tn
+{
+  background-color: rgb(230, 230, 230);
+  filter: invert(100%);
+  /*filter: invert(20%) brightness(30%);*/
+}
+
+table
+{
+   border-collapse: collapse;
+}
+
+tr
+{
+  border-bottom: 8px solid var(--bwhite);
+  background-color: var(--blightgray);
+}
+
+.article
+{
+}
+
+.article .year
+{
+    width: 10%;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.article .entry
+{
+    width: 90%;
+    padding: 4px;
+    text-align: right;
+}
+
+.article .entry .title
+{
+    color: var(--bblue);
+    font-style: italic
+}
+
+.article .entry .authors
+{
+  line-height: 1.2;
+  font-size: 20px;
+}
+
+.article .entry .link
+{
+  line-height: 1.2;
+  font-size: 20px;
+}
+
+a:link
+{
+ color: var(--bgreen);
+}
+
+a:visited
+{
+ color: var(--bgreen);
+}
+
+a:hover
+{
+ color: var(--bblue);
+}
+
+a:active
+{
+ color: var(--bblue);
+}
+
+.svg-board
+{
+  width: 100%;
+  height: 600px;
+  border: 1px solid var(--bblue);
+  border-radius: 6px;
+}
+
+.tensor, .index, .point
+{
+  fill: var(--bgray);
+  stroke: var(--bblack);
+}
+
+
+@media only screen and (max-width: 600px)
+{
+  .svg-board
+  {
+    height: 300px;
+  }
+  /*.tensor
+  {
+    r: 26;
+  }
+  .point
+  {
+    r: 8;
+  }*/
+}

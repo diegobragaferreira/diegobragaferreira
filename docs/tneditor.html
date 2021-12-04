@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Darker+Grotesque:wght@400&display=swap" rel="stylesheet">
+    <title>Tensor Network Editor</title>
+
+    <script>
+      const theme = localStorage.getItem("theme");
+      if (theme) { document.body.classList.add(theme);};
+    </script>
+    
+</head>
+
+<body>
+  
+<header style="width: inherit">
+  <nav style="width: inherit">
+    <ul>
+      <li><a href="index.html">home</a></li>
+      <li class="active"><a href="tneditor.html">tensor network editor</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+  <h2 class="titlename">Tensor Network Editor</h2>
+  <div id="wrapper">
+    <svg id="svg-board" class="svg-board" style="width: 100%"></svg>
+  </div>
+
+  <p>
+    <button id="clearBtn">clear</button>
+    <button id="gridBtn">grid</button>
+    <button id="drawBtn">draw</button>
+    <button id="moveBtn">move</button>
+    <button id="saveBtn">save</button>
+    <a id="savedlink" download="tn_svg_figure" style="padding: 6px;">download</a>
+  </p>
+
+  <h3 class="decorated-title"><span>Help</span></h3>
+
+  <p>
+    "Clear" resets the scene and erase all tensors and links. "Grid" change between
+    {none, square, diamond, isometrical} grids and snaps the tensors in it.
+    "Draw" button selects draw mode: 1 click in blank creates a tensor, 1 click
+    in tensor selects it until another tensor (or point in blank) is selected
+    to then be connected, 2 clicks erases a tensor or point. "Move" button enables
+    the indexing and selected tensors or points can be moved freely. "Save" button saves 
+    the state of the diagram, and put it in "download" link to be downloaded.
+    This is a "working in progress" and feedback is appreciated (contact@diegoferreira.net).
+  </p>
+
+  <!--<div id="svgcode" style="line-height: 0.8; font-size: 8;"></div>-->
+    
+  <!--<form>
+    <input type="radio" id="square" name="grid" value="square" checked>
+    <label for="male">square</label><br>
+    <input type="radio" id="diamond" name="grid" value="diamond">
+    <label for="female">diamond</label><br>
+    <input type="radio" id="isometric" name="grid" value="isometric">
+    <label for="other">isometric</label>
+  </form>-->
+
+  <script src="js/tensor.js"></script>
+  <script src="js/savesvg.js"></script>
+  </main>
+
+</body>
+</html>
