@@ -21,10 +21,10 @@
   --bblack: #7c7c7c;
 }
 
-html
+/*html
 {
-  /*background-color: var(--blightgray);*/
-}
+  background-color: var(--blightgray);
+}*/
 
 body
 {
@@ -224,10 +224,6 @@ tr
 {
   border-bottom: 8px solid var(--bwhite);
   background-color: var(--blightgray);
-}
-
-.article
-{
 }
 
 .article .year
