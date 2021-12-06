@@ -258,24 +258,24 @@ tr
   font-size: 20px;
 }
 
-a:link
+a:link, a:visited
 {
  color: var(--bgreen);
 }
 
-a:visited
-{
- color: var(--bgreen);
-}
-
-a:hover
+a:hover, a:active
 {
  color: var(--bblue);
 }
 
-a:active
+a svg, a svg:link, a:visited
 {
- color: var(--bblue);
+ fill: var(--bgreen);
+}
+
+a svg:hover, a svg:active
+{
+ fill: var(--bblue);
 }
 
 .svg-board
