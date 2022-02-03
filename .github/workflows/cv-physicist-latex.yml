@@ -2,7 +2,7 @@ name: Build LaTeX document
 on:
   push:
     paths:
-      - cv/**
+      - cv-physicist/**
 jobs:
   build_latex:
     runs-on: ubuntu-latest
@@ -12,7 +12,7 @@ jobs:
       - name: Compile LaTeX document
         uses: xu-cheng/latex-action@v2
         with:
-          working_directory: cv
+          working_directory: cv-physicist
           root_file: cv.tex
           latexmk_use_xelatex: true
           post_compile: "latexmk -c"
@@ -35,7 +35,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: cv
-          path: cv/cv.pdf
+          path: cv/cv-physicist.pdf
 
 
             
