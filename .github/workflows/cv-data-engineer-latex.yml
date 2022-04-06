@@ -34,5 +34,5 @@ jobs:
       - name: Upload PDF to workflow tab
         uses: actions/upload-artifact@v2
         with:
-          name: cv
-          path: cv/cv-data-engineer.pdf
+          name: cv-data-engineer
+          path: cv-data-engineer/cv.pdf
