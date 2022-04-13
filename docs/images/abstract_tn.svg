@@ -1,0 +1,309 @@
+<?xml version="1.0" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg" id="svg-board" class="svg-board" style="width: 100%"
+    viewBox="229 4.483333110809326 342 533" width="352" height="533">
+    <g id="grid" />
+    <g id="indexes">
+        <g>
+            <line class="index" x1="350" x2="450" y1="175" y2="125" stroke="black" stroke-width="1" />
+            <circle r="10" cx="400" cy="150" fill="rgb(255,255,255)" opacity="0%" /><text pointer-events="none"
+                dominant-baseline="middle" text-anchor="middle" x="400" y="150" opacity="0%">1</text></g>
+        <g>
+            <line class="index" x1="450" x2="350" y1="125" y2="75" stroke="black" stroke-width="1" />
+            <circle r="10" cx="400" cy="100" fill="rgb(255,255,255)" opacity="0%" /><text pointer-events="none"
+                dominant-baseline="middle" text-anchor="middle" x="400" y="100" opacity="0%">2</text></g>
+        <g>
+            <line class="index" x1="350" x2="250" y1="75" y2="125" stroke="black" stroke-width="1" />
+            <circle r="10" cx="300" cy="100" fill="rgb(255,255,255)" opacity="0%" /><text pointer-events="none"
+                dominant-baseline="middle" text-anchor="middle" x="300" y="100" opacity="0%">3</text></g>
+        <g>
+            <line class="index" x1="250" x2="350" y1="125" y2="175" stroke="black" stroke-width="1" />
+            <circle r="10" cx="300" cy="150" fill="rgb(255,255,255)" opacity="0%" /><text pointer-events="none"
+                dominant-baseline="middle" text-anchor="middle" x="300" y="150" opacity="0%">4</text></g>
+        <g>
+            <line class="index" x1="350" x2="450" y1="275" y2="225" stroke="black" stroke-width="1" />
+            <circle r="10" cx="400" cy="250" fill="rgb(255,255,255)" opacity="0%" /><text pointer-events="none"
+                dominant-baseline="middle" text-anchor="middle" x="400" y="250" opacity="0%">5</text></g>
+        <g>
+            <line class="index" x1="450" x2="550" y1="225" y2="275" stroke="black" stroke-width="1" />
+            <circle r="10" cx="500" cy="250" fill="rgb(255,255,255)" opacity="0%" /><text pointer-events="none"
+                dominant-baseline="middle" text-anchor="middle" x="500" y="250" opacity="0%">6</text></g>
+        <g>
+            <line class="index" x1="550" x2="450" y1="275" y2="325" stroke="black" stroke-width="1" />
+            <circle r="10" cx="500" cy="300" fill="rgb(255,255,255)" opacity="0%" /><text pointer-events="none"
+                dominant-baseline="middle" text-anchor="middle" x="500" y="300" opacity="0%">7</text></g>
+        <g>
+            <line class="index" x1="450" x2="350" y1="325" y2="275" stroke="black" stroke-width="1" />
+            <circle r="10" cx="400" cy="300" fill="rgb(255,255,255)" opacity="0%" /><text pointer-events="none"
+                dominant-baseline="middle" text-anchor="middle" x="400" y="300" opacity="0%">8</text></g>
+        <g>
+            <line class="index" x1="450" x2="350" y1="425" y2="375" stroke="black" stroke-width="1" />
+            <circle r="10" cx="400" cy="400" fill="rgb(255,255,255)" opacity="0%" /><text pointer-events="none"
+                dominant-baseline="middle" text-anchor="middle" x="400" y="400" opacity="0%">9</text></g>
+        <g>
+            <line class="index" x1="250" x2="350" y1="425" y2="375" stroke="black" stroke-width="1" />
+            <circle r="10" cx="300" cy="400" fill="rgb(255,255,255)" opacity="0%" /><text pointer-events="none"
+                dominant-baseline="middle" text-anchor="middle" x="300" y="400" opacity="0%">10</text></g>
+        <g>
+            <line class="index" x1="450" x2="350" y1="425" y2="475" stroke="black" stroke-width="1" />
+            <circle r="10" cx="400" cy="450" fill="rgb(255,255,255)" opacity="0%" /><text pointer-events="none"
+                dominant-baseline="middle" text-anchor="middle" x="400" y="450" opacity="0%">11</text></g>
+        <g>
+            <line class="index" x1="350" x2="250" y1="475" y2="425" stroke="black" stroke-width="1" />
+            <circle r="10" cx="300" cy="450" fill="rgb(255,255,255)" opacity="0%" /><text pointer-events="none"
+                dominant-baseline="middle" text-anchor="middle" x="300" y="450" opacity="0%">12</text></g>
+        <g>
+            <line class="index" x1="250" x2="250" y1="425" y2="475" stroke="black" stroke-width="1" />
+            <circle r="10" cx="250" cy="450" fill="rgb(255,255,255)" opacity="0%" /><text pointer-events="none"
+                dominant-baseline="middle" text-anchor="middle" x="250" y="450" opacity="0%">13</text></g>
+        <g>
+            <line class="index" x1="350" x2="350" y1="475" y2="525" stroke="black" stroke-width="1" />
+            <circle r="10" cx="350" cy="500" fill="rgb(255,255,255)" opacity="0%" /><text pointer-events="none"
+                dominant-baseline="middle" text-anchor="middle" x="350" y="500" opacity="0%">14</text></g>
+        <g>
+            <line class="index" x1="450" x2="450" y1="425" y2="475" stroke="black" stroke-width="1" />
+            <circle r="10" cx="450" cy="450" fill="rgb(255,255,255)" opacity="0%" /><text pointer-events="none"
+                dominant-baseline="middle" text-anchor="middle" x="450" y="450" opacity="0%">15</text></g>
+        <g>
+            <line class="index" x1="450" x2="450" y1="425" y2="375" stroke="black" stroke-width="1" />
+            <circle r="10" cx="450" cy="400" fill="rgb(255,255,255)" opacity="0%" /><text pointer-events="none"
+                dominant-baseline="middle" text-anchor="middle" x="450" y="400" opacity="0%">16</text></g>
+        <g>
+            <line class="index" x1="550" x2="550" y1="275" y2="325" stroke="black" stroke-width="1" />
+            <circle r="10" cx="550" cy="300" fill="rgb(255,255,255)" opacity="0%" /><text pointer-events="none"
+                dominant-baseline="middle" text-anchor="middle" x="550" y="300" opacity="0%">17</text></g>
+        <g>
+            <line class="index" x1="250" x2="250" y1="425" y2="375" stroke="black" stroke-width="1" />
+            <circle r="10" cx="250" cy="400" fill="rgb(255,255,255)" opacity="0%" /><text pointer-events="none"
+                dominant-baseline="middle" text-anchor="middle" x="250" y="400" opacity="0%">19</text></g>
+        <g>
+            <line class="index" x1="350" x2="350" y1="275" y2="225" stroke="black" stroke-width="1" />
+            <circle r="10" cx="350" cy="250" fill="rgb(255,255,255)" opacity="0%" /><text pointer-events="none"
+                dominant-baseline="middle" text-anchor="middle" x="350" y="250" opacity="0%">20</text></g>
+        <g>
+            <line class="index" x1="550" x2="550" y1="275" y2="225" stroke="black" stroke-width="1" />
+            <circle r="10" cx="550" cy="250" fill="rgb(255,255,255)" opacity="0%" /><text pointer-events="none"
+                dominant-baseline="middle" text-anchor="middle" x="550" y="250" opacity="0%">21</text></g>
+        <g>
+            <line class="index" x1="250" x2="250" y1="125" y2="175" stroke="black" stroke-width="1" />
+            <circle r="10" cx="250" cy="150" fill="rgb(255,255,255)" opacity="0%" /><text pointer-events="none"
+                dominant-baseline="middle" text-anchor="middle" x="250" y="150" opacity="0%">23</text></g>
+        <g>
+            <line class="index" x1="350" x2="350" y1="75" y2="125" stroke="black" stroke-width="1" />
+            <circle r="10" cx="350" cy="100" fill="rgb(255,255,255)" opacity="0%" /><text pointer-events="none"
+                dominant-baseline="middle" text-anchor="middle" x="350" y="100" opacity="0%">24</text></g>
+        <g>
+            <line class="index" x1="450" x2="450" y1="225" y2="275" stroke="black" stroke-width="1" />
+            <circle r="10" cx="450" cy="250" fill="rgb(255,255,255)" opacity="0%" /><text pointer-events="none"
+                dominant-baseline="middle" text-anchor="middle" x="450" y="250" opacity="0%">25</text></g>
+        <g>
+            <line class="index" x1="350" x2="350" y1="375" y2="425" stroke="black" stroke-width="1" />
+            <circle r="10" cx="350" cy="400" fill="rgb(255,255,255)" opacity="0%" /><text pointer-events="none"
+                dominant-baseline="middle" text-anchor="middle" x="350" y="400" opacity="0%">26</text></g>
+        <g>
+            <line class="index" x1="350" x2="350" y1="75" y2="25" stroke="black" stroke-width="1" />
+            <circle r="10" cx="350" cy="50" fill="rgb(255,255,255)" opacity="0%" /><text pointer-events="none"
+                dominant-baseline="middle" text-anchor="middle" x="350" y="50" opacity="0%">27</text></g>
+        <g>
+            <line class="index" x1="250" x2="250" y1="125" y2="75" stroke="black" stroke-width="1" />
+            <circle r="10" cx="250" cy="100" fill="rgb(255,255,255)" opacity="0%" /><text pointer-events="none"
+                dominant-baseline="middle" text-anchor="middle" x="250" y="100" opacity="0%">28</text></g>
+        <g>
+            <line class="index" x1="450" x2="450" y1="125" y2="75" stroke="black" stroke-width="1" />
+            <circle r="10" cx="450" cy="100" fill="rgb(255,255,255)" opacity="0%" /><text pointer-events="none"
+                dominant-baseline="middle" text-anchor="middle" x="450" y="100" opacity="0%">29</text></g>
+        <g>
+            <line class="index" x1="250" x2="350" y1="175" y2="225" stroke="black" stroke-width="1" />
+            <circle r="10" cx="300" cy="200" fill="rgb(255,255,255)" opacity="0%" /><text pointer-events="none"
+                dominant-baseline="middle" text-anchor="middle" x="300" y="200" opacity="0%">30</text></g>
+        <g>
+            <line class="index" x1="450" x2="550" y1="375" y2="325" stroke="black" stroke-width="1" />
+            <circle r="10" cx="500" cy="350" fill="rgb(255,255,255)" opacity="0%" /><text pointer-events="none"
+                dominant-baseline="middle" text-anchor="middle" x="500" y="350" opacity="0%">32</text></g>
+    </g>
+    <g id="tensors">
+        <g>
+            <a href="https://www.linkedin.com/in/diego-braga-ferreira/" target="_blank">
+            <circle class="tensor" id="tensor" r="25" cx="250" cy="125" stroke="black" stroke-width="1" 
+                fill="rgb(255,255,255)" />
+            <svg fill="#000000" x="230" y="105" width="38px" height="38px" viewBox="0 0 310 310">
+                <title>Linkedin</title>
+                <g>
+	                <path d="M72.16,99.73H9.927c-2.762,0-5,2.239-5,5v199.928c0,2.762,2.238,5,5,5H72.16c2.762,0,5-2.238,5-5V104.73 C77.16,101.969,74.922,99.73,72.16,99.73z"/>
+	                <path d="M41.066,0.341C18.422,0.341,0,18.743,0,41.362C0,63.991,18.422,82.4,41.066,82.4 c22.626,0,41.033-18.41,41.033-41.038C82.1,18.743,63.692,0.341,41.066,0.341z"/>
+	                <path d="M230.454,94.761c-24.995,0-43.472,10.745-54.679,22.954V104.73c0-2.761-2.238-5-5-5h-59.599 c-2.762,0-5,2.239-5,5v199.928c0,2.762,2.238,5,5,5h62.097c2.762,0,5-2.238,5-5v-98.918c0-33.333,9.054-46.319,32.29-46.319 c25.306,0,27.317,20.818,27.317,48.034v97.204c0,2.762,2.238,5,5,5H305c2.762,0,5-2.238,5-5V194.995 C310,145.43,300.549,94.761,230.454,94.761z"/>
+                </g>
+            </svg>
+            </a>
+        </g>
+        <g>
+            <a href="https://www.instagram.com/diegobragaferreira" target="_blank">
+            <circle class="tensor" id="tensor" r="25" cx="350" cy="75" stroke="black" stroke-width="1"
+                fill="rgb(255,255,255)" />
+            <svg fill="#000000" x="330" y="55" width="38px" height="38px" viewBox="0 0 300 300">
+                <title>Instagram</title>
+               	<path d="M38.52,0.012h222.978C282.682,0.012,300,17.336,300,38.52v222.978c0,21.178-17.318,38.49-38.502,38.49 H38.52c-21.184,0-38.52-17.313-38.52-38.49V38.52C0,17.336,17.336,0.012,38.52,0.012z M218.546,33.329 c-7.438,0-13.505,6.091-13.505,13.525v32.314c0,7.437,6.067,13.514,13.505,13.514h33.903c7.426,0,13.506-6.077,13.506-13.514 V46.854c0-7.434-6.08-13.525-13.506-13.525H218.546z M266.084,126.868h-26.396c2.503,8.175,3.86,16.796,3.86,25.759 c0,49.882-41.766,90.34-93.266,90.34c-51.487,0-93.254-40.458-93.254-90.34c0-8.963,1.37-17.584,3.861-25.759H33.35v126.732 c0,6.563,5.359,11.902,11.916,11.902h208.907c6.563,0,11.911-5.339,11.911-11.902V126.868z M150.283,90.978 c-33.26,0-60.24,26.128-60.24,58.388c0,32.227,26.98,58.375,60.24,58.375c33.278,0,60.259-26.148,60.259-58.375 C210.542,117.105,183.561,90.978,150.283,90.978z"/>
+            </svg>
+            </a>
+        </g>
+        <g>
+            <a href="https://www.facebook.com/diegoleonardo.bragaferreira" target="_blank">
+            <circle class="tensor" id="tensor" r="25" cx="450" cy="125" stroke="black" stroke-width="1"
+                fill="rgb(255,255,255)" />
+            <svg fill="#000000" x="430" y="105" width="40px" height="40px" viewBox="0 0 310 310">
+                <title>Facebook</title>
+	            <path d="M81.703,165.106h33.981V305c0,2.762,2.238,5,5,5h57.616c2.762,0,5-2.238,5-5V165.765h39.064 c2.54,0,4.677-1.906,4.967-4.429l5.933-51.502c0.163-1.417-0.286-2.836-1.234-3.899c-0.949-1.064-2.307-1.673-3.732-1.673h-44.996 V71.978c0-9.732,5.24-14.667,15.576-14.667c1.473,0,29.42,0,29.42,0c2.762,0,5-2.239,5-5V5.037c0-2.762-2.238-5-5-5h-40.545 C187.467,0.023,186.832,0,185.896,0c-7.035,0-31.488,1.381-50.804,19.151c-21.402,19.692-18.427,43.27-17.716,47.358v37.752H81.703 c-2.762,0-5,2.238-5,5v50.844C76.703,162.867,78.941,165.106,81.703,165.106z"/>
+            </svg>
+            </a>
+        </g>
+        <g>
+            <a href="https://twitter.com/diegolbferreira" target="_blank">
+            <circle class="tensor" id="tensor" r="25" cx="350" cy="175" stroke="black" stroke-width="1"
+                fill="rgb(255,255,255)" />
+            <svg fill="#000000" x="330" y="155" width="40px" height="40px" viewBox="0 0 310 310">
+                <title>Twitter</title>
+                <path d="M302.973,57.388c-4.87,2.16-9.877,3.983-14.993,5.463c6.057-6.85,10.675-14.91,13.494-23.73 c0.632-1.977-0.023-4.141-1.648-5.434c-1.623-1.294-3.878-1.449-5.665-0.39c-10.865,6.444-22.587,11.075-34.878,13.783 c-12.381-12.098-29.197-18.983-46.581-18.983c-36.695,0-66.549,29.853-66.549,66.547c0,2.89,0.183,5.764,0.545,8.598 C101.163,99.244,58.83,76.863,29.76,41.204c-1.036-1.271-2.632-1.956-4.266-1.825c-1.635,0.128-3.104,1.05-3.93,2.467 c-5.896,10.117-9.013,21.688-9.013,33.461c0,16.035,5.725,31.249,15.838,43.137c-3.075-1.065-6.059-2.396-8.907-3.977 c-1.529-0.851-3.395-0.838-4.914,0.033c-1.52,0.871-2.473,2.473-2.513,4.224c-0.007,0.295-0.007,0.59-0.007,0.889 c0,23.935,12.882,45.484,32.577,57.229c-1.692-0.169-3.383-0.414-5.063-0.735c-1.732-0.331-3.513,0.276-4.681,1.597 c-1.17,1.32-1.557,3.16-1.018,4.84c7.29,22.76,26.059,39.501,48.749,44.605c-18.819,11.787-40.34,17.961-62.932,17.961 c-4.714,0-9.455-0.277-14.095-0.826c-2.305-0.274-4.509,1.087-5.294,3.279c-0.785,2.193,0.047,4.638,2.008,5.895 c29.023,18.609,62.582,28.445,97.047,28.445c67.754,0,110.139-31.95,133.764-58.753c29.46-33.421,46.356-77.658,46.356-121.367 c0-1.826-0.028-3.67-0.084-5.508c11.623-8.757,21.63-19.355,29.773-31.536c1.237-1.85,1.103-4.295-0.33-5.998 C307.394,57.037,305.009,56.486,302.973,57.388z"/>
+            </svg>
+            </a>
+        </g>
+        <g>
+            <a href="https://scholar.google.com/citations?user=6i7I6wUAAAAJ" target="_blank">
+            <circle class="tensor" id="tensor" r="25" cx="450" cy="225" stroke="black" stroke-width="1"
+                fill="rgb(255,255,255)" />
+            <svg fill="#000000" x="430" y="205" width="40px" height="40px" viewBox="0 0 24 24">
+                <title>Google Scholar</title>
+                <path d="M 11 4 L 3 9 L 8.4921875 9 C 8.4715892 9.0754986 8.4383718 9.1441171 8.421875 9.2226562 C 8.375875 9.4646562 8.3398437 9.7308125 8.3398438 10.007812 C 8.3398438 13.578812 11.990234 13.175781 11.990234 13.175781 L 11.990234 14.085938 C 11.990234 14.454937 12.47425 14.327172 12.53125 15.076172 C 12.28925 15.076172 7.4746094 14.937547 7.4746094 18.185547 C 7.4746094 21.445547 11.724609 21.285156 11.724609 21.285156 C 11.724609 21.285156 16.632812 21.504656 16.632812 17.472656 C 16.634813 15.063656 13.822266 14.2795 13.822266 13.3125 C 13.822266 12.3335 15.941406 12.045906 15.941406 9.7539062 C 15.941406 8.7519062 15.872828 8.03825 15.423828 7.53125 C 15.388828 7.49625 15.366031 7.4722188 15.332031 7.4492188 C 15.324304 7.4420199 15.31448 7.4367774 15.306641 7.4296875 L 15.429688 7.4296875 L 17.5 5.8769531 L 17.5 8 A 0.50005 0.50005 0 0 0 17.511719 8.1152344 A 1.0001 1.0001 0 0 0 17 9 L 17 10 A 1.0001 1.0001 0 1 0 19 10 L 19 9 A 1.0001 1.0001 0 0 0 18.488281 8.1152344 A 0.50005 0.50005 0 0 0 18.5 8 L 18.5 5.125 L 20 4 L 11 4 z M 11.691406 7.0527344 C 11.979219 7.0397031 12.268922 7.109625 12.544922 7.265625 C 12.751922 7.369625 12.946141 7.518125 13.119141 7.703125 C 13.476141 8.060125 13.7765 8.5784531 13.9375 9.1894531 C 14.3175 10.640453 13.823828 12.035781 12.798828 12.300781 C 11.784828 12.587781 10.654672 11.641172 10.263672 10.201172 C 10.090672 9.4991719 10.114547 8.8202969 10.310547 8.2792969 C 10.312395 8.2723193 10.316443 8.2666961 10.318359 8.2597656 C 10.321722 8.2581149 10.32682 8.253536 10.330078 8.2519531 C 10.386262 8.0380596 10.478099 7.8461668 10.589844 7.6875 C 10.795388 7.3872165 11.066477 7.1838352 11.404297 7.09375 C 11.499297 7.07075 11.595469 7.0570781 11.691406 7.0527344 z M 12.082031 15.685547 C 13.775031 15.558547 15.216313 16.490813 15.320312 17.757812 C 15.390313 19.013813 14.087812 20.131094 12.382812 20.246094 C 10.689813 20.361094 9.2274844 19.441547 9.1464844 18.185547 C 9.0654844 16.918547 10.377031 15.812547 12.082031 15.685547 z"/>
+            </svg>
+            </a>
+        </g>
+        <g>
+            <a href="https://arxiv.org/a/ferreira_d_1.html" target="_blank">
+            <circle class="tensor" id="tensor" r="25" cx="550" cy="275" stroke="black" stroke-width="1"
+                fill="rgb(255,255,255)" />
+            <svg fill="#000000" x="530" y="255" width="40px" height="40px" viewBox="0 0 17.732 24.269">
+                <title>arXiv</title>
+                <path d="M573.549,280.916l2.266,2.738,6.674-7.84c.353-.47.52-.717.353-1.117a1.218,1.218,0,0,0-1.061-.748h0a.953.953,0,0,0-.712.262Z" transform="translate(-566.984 -271.548)" fill="#bdbdbd"/><path d="M579.525,282.225l-10.606-10.174a1.413,1.413,0,0,0-.834-.5,1.09,1.09,0,0,0-1.027.66c-.167.4-.047.681.319,1.206l8.44,10.242h0l-6.282,7.716a1.336,1.336,0,0,0-.323,1.3,1.114,1.114,0,0,0,1.04.69A.992.992,0,0,0,571,293l8.519-7.92A1.924,1.924,0,0,0,579.525,282.225Z" transform="translate(-566.984 -271.548)" fill="#000000"/><path d="M584.32,293.912l-8.525-10.275,0,0L573.53,280.9l-1.389,1.254a2.063,2.063,0,0,0,0,2.965l10.812,10.419a.925.925,0,0,0,.742.282,1.039,1.039,0,0,0,.953-.667A1.261,1.261,0,0,0,584.32,293.912Z" transform="translate(-566.984 -271.548)" fill="#bdbdbd"/>    
+            </svg>
+            </a>
+        </g>
+        <g>
+            <a href="https://orcid.org/0000-0002-7394-282X" target="_blank">
+            <circle class="tensor" id="tensor" r="25" cx="450" cy="325" stroke="black" stroke-width="1"
+                fill="rgb(255,255,255)" />
+            <svg fill="#000000" x="430" y="305" width="40px" height="40px" viewBox="0 0 24 24">
+                <title>ORCID</title>
+                <path d="M12 0C5.372 0 0 5.372 0 12s5.372 12 12 12 12-5.372 12-12S18.628 0 12 0zM7.369 4.378c.525 0 .947.431.947.947s-.422.947-.947.947a.95.95 0 0 1-.947-.947c0-.525.422-.947.947-.947zm-.722 3.038h1.444v10.041H6.647V7.416zm3.562 0h3.9c3.712 0 5.344 2.653 5.344 5.025 0 2.578-2.016 5.025-5.325 5.025h-3.919V7.416zm1.444 1.303v7.444h2.297c3.272 0 4.022-2.484 4.022-3.722 0-2.016-1.284-3.722-4.097-3.722h-2.222z"/>
+            </svg>
+            </a>
+        </g>
+        <g>
+            <a href="https://lattes.cnpq.br/6862556670963748" target="_blank">
+            <circle class="tensor" id="tensor" r="25" cx="350" cy="275" stroke="black" stroke-width="1"
+                fill="rgb(255,255,255)" />
+            <svg fill="#000000" x="330" y="255" width="40px" height="40px" viewBox="0 0 1792 1792">
+                <title>Lattes</title>
+                <path transform="scale(1,-1) translate(0,-1500)" d="M380 -101q-306 625 -306 634t32 4q23 -4 95 -18q103 -20 178.5 -31t147.5 -15.5t164 -4.5q357 0 583 114q112 56 167 124q36 44 50 80.5t14 88.5q1 49 -8 84.5t-38 95.5q-27 57 -29 80q-2 10 -0.5 15.5t4.5 7.5t11 3q12 1 45.5 -24.5t72 -63t77.5 -82.5t61 -79 q78 -122 84 -251.5t-60 -257.5q-40 -78 -89 -137.5t-124 -121.5q-124 -102 -274 -176t-350 -132q-107 -31 -246 -61t-175 -30q-7 0 -25 31.5t-63 122.5h1zM508 -176q-1 3 -55 112q-78 161 -63 162q8 0 4 11.5t2 15.5q16 8 1 49t-44 69q-23 22 -26 50q-2 25 -16.5 67 t-32.5 76q-17 31 -8 34q2 0 -3 2q-11 5 -43 11q-53 11 -62 16.5t-9 3.5q0 -12 173 -349t179 -337q7 0 3 7v0zM433 531q-338 44 -347 47q-6 2 -24 61.5t-30 119.5q-8 38 -14 120q-11 152 24 263.5t123 205.5q151 160 451 178.5t663 -110.5q108 -39 107 -59q0 -3 -4 -6 q-17 -15 -225 1q-158 11 -275.5 -10.5t-179.5 -73.5q-95 -79 -80.5 -250t136.5 -421q32 -66 39 -79q7 -12 3 -22t-17 -9q-13 0 -350 44v0zM737 532q-5 3 -14 0q-7 -2 0 -3q1 0 4 -1q9 1 10 4zM698 538q-9 3 -156.5 23.5t-293 39.5t-147.5 18q-6 -3 -2 -6q2 -2 143.5 -21 t287.5 -38t159 -19l11 2zM469 598q-9 3 -18 0q3 -2 9 -3l11 2zM314 621q-135 21 -157 25q-6 1 -10 2t-8 2.5t-6.5 3t-5 4.5t-4 6l-3.5 7l-10 21l5 -21q4 -20 4.5 -26.5t140.5 -25.5q170 -22 157 -16q-9 3 -103 18v0zM1056 713q-73 13 -139.5 46t-115 79.5t-69.5 98.5 q-16 38 -15.5 82t17.5 74q15 27 49 54t69 40q57 22 146 14t163 -40q70 -31 126.5 -81.5t79.5 -101.5q30 -65 8 -130.5t-86 -100.5q-42 -23 -111.5 -33t-121.5 -1zM979 783q-49 21 -53 17q-2 -1 19.5 -11t45.5 -19t30 -9q3 1 -11 7zM903 844q-39 29 -73 61t-34 26 q0 -11 64 -63.5t77 -52.5q3 0 -10 11q-10 8 -24 18z" />
+            </svg>
+            </a>
+        </g>
+        <g>
+            <a href="https://github.com/diegobragaferreira" target="_blank">
+            <circle class="tensor" id="tensor" r="25" cx="350" cy="375" stroke="black" stroke-width="1"
+                fill="rgb(255,255,255)" />
+            <svg fill="#000000" x="330" y="355" width="40px" height="40px" viewBox="0 0 32 32">
+                <title>Github</title>
+                <path d="M16 0.396c-8.839 0-16 7.167-16 16 0 7.073 4.584 13.068 10.937 15.183 0.803 0.151 1.093-0.344 1.093-0.772 0-0.38-0.009-1.385-0.015-2.719-4.453 0.964-5.391-2.151-5.391-2.151-0.729-1.844-1.781-2.339-1.781-2.339-1.448-0.989 0.115-0.968 0.115-0.968 1.604 0.109 2.448 1.645 2.448 1.645 1.427 2.448 3.744 1.74 4.661 1.328 0.14-1.031 0.557-1.74 1.011-2.135-3.552-0.401-7.287-1.776-7.287-7.907 0-1.751 0.62-3.177 1.645-4.297-0.177-0.401-0.719-2.031 0.141-4.235 0 0 1.339-0.427 4.4 1.641 1.281-0.355 2.641-0.532 4-0.541 1.36 0.009 2.719 0.187 4 0.541 3.043-2.068 4.381-1.641 4.381-1.641 0.859 2.204 0.317 3.833 0.161 4.235 1.015 1.12 1.635 2.547 1.635 4.297 0 6.145-3.74 7.5-7.296 7.891 0.556 0.479 1.077 1.464 1.077 2.959 0 2.14-0.020 3.864-0.020 4.385 0 0.416 0.28 0.916 1.104 0.755 6.4-2.093 10.979-8.093 10.979-15.156 0-8.833-7.161-16-16-16z"/>
+            </svg>
+            </a>
+        </g>
+        <g>
+            <a href="https://www.coursera.org/user/cd826c9e80fd1678bd69b21f988e63c1" target="_blank">
+            <circle class="tensor" id="tensor" r="25" cx="350" cy="475" stroke="black" stroke-width="1"
+                fill="rgb(255,255,255)" />
+            <svg fill="#000000" x="330" y="455" width="40px" height="40px" viewBox="0 0 24 24">
+                <title>Coursera</title>
+                <path d="M23.992 11.806a5.091 5.091 0 0 0-.018-.279v-.002-.002a5.98 5.98 0 0 0-.99-2.814 6.217 6.217 0 0 0-.867-1.039 6.289 6.289 0 0 0-1.64-1.13 7.016 7.016 0 0 0-3.051-.668 7.35 7.35 0 0 0-2.546.444 6.323 6.323 0 0 0-1.822.996 6.45 6.45 0 0 0-.333.29l-.085.085-.117.125h.001l-.056.055-.026.028-.141.147c-.104.117-.202.234-.296.349v-.002l-.004-.003c-.192.233-.37.476-.5.693-.089.14-.176.283-.259.427l-1.147 2.319.002.001-.06.118-.126.256c-.251.509-.521 1.017-.821 1.435-.672.737-1.431 1.098-2.406 1.098-.068 0-.139-.003-.209-.008-.588-.023-1.092-.162-1.539-.427a2.576 2.576 0 0 1-.994-1.03 2.659 2.659 0 0 1-.326-1.369l.002-.034c.031-.76.321-1.352.904-1.861.142-.124.291-.228.446-.32.021-.013.044-.024.065-.036.434-.237.927-.355 1.492-.355l.176.005c.899.034 1.592.314 2.145.863l1.734-3.113a6.845 6.845 0 0 0-1.399-.71c-.019-.007-.04-.016-.06-.022-.062-.022-.123-.045-.186-.065a7.425 7.425 0 0 0-1.716-.348 5.545 5.545 0 0 1-.046-.006c-.091-.005-.184-.016-.275-.02a9.966 9.966 0 0 0-.297-.007h-.055a7.005 7.005 0 0 0-3.028.67 6.176 6.176 0 0 0-2.502 2.166A6.006 6.006 0 0 0 0 12.087c-.002 1.564.568 2.938 1.701 4.093 1.184 1.211 2.721 1.864 4.567 1.941.118.005.235.008.353.008 1.045 0 2.011-.186 2.878-.558.217-.093.427-.201.642-.322.117-.067.228-.139.338-.215l.08-.055.137-.093c.164-.118.317-.246.467-.381l.052-.05c.088-.083.176-.168.259-.255l.311-.352.118-.148.056-.081.055-.079c.462-.776 1.965-3.601 1.965-3.601v-.006l.09-.172.074-.135c.222-.403.382-.689.594-.99l.006-.01c.493-.717 1.344-1.227 2.346-1.313 1.68-.145 3.152.959 3.287 2.465.135 1.507-1.117 2.846-2.798 2.991a3.417 3.417 0 0 1-1.011-.064l-.009.003c-1.232-.257-2.017-1.155-2.404-1.558l-1.617 2.974s.503.506.847.759c.346.253.791.501 1.146.656a7.151 7.151 0 0 0 2.838.589c.121 0 .097 0 .222-.005 1.844-.077 3.489-.784 4.675-1.995 1.123-1.15 1.733-2.463 1.738-4.018v-.047l-.011-.257z"/>
+            </svg>
+            </a>
+        </g>
+        <g>
+            <a href="https://www.udemy.com/user/diego-leonardo-braga-ferreira" target="_blank">
+            <circle class="tensor" id="tensor" r="25" cx="450" cy="425" stroke="black" stroke-width="1"
+                fill="rgb(255,255,255)" />
+            <svg fill="#000000" x="430" y="405" width="40px" height="40px" viewBox="0 0 412.77 799.91">
+                <title>Udemy</title>
+                <path stroke-width="1" stroke="black" fill="black" d="M412.74 238.2l-206.4-119.1L0 238.2V119.1L206.37 0l206.4 119.1v119.1z" /><path d="M0 338.22h108.11v262.54c0 67.83 50.67 100.9 98.26 100.9 48 0 98.3-33.95 98.3-101.81V338.22h108.1v268.8c0 62.48-19.65 110.7-58.96 143.76-39.33 33.04-88.45 49.13-148.35 49.13-59.84 0-108.99-16.06-147.38-49.13C19.65 717.75 0 671.32 0 609.69z"/>
+            </svg>
+            </a>
+        </g>
+        <g>
+            <a href="https://stackoverflow.com/users/15393834/diego-ferreira" target="_blank">
+            <circle class="tensor" id="tensor" r="25" cx="250" cy="425" stroke="black" stroke-width="1"
+                fill="rgb(255,255,255)" />
+            <svg fill="#000000" x="230" y="405" width="40px" height="40px" viewBox="0 0 24 24" role="img">
+                <title>Stack Overflow</title>
+                <path d="M18.986 21.865v-6.404h2.134V24H1.844v-8.539h2.13v6.404h15.012zM6.111 19.731H16.85v-2.137H6.111v2.137zm.259-4.852l10.48 2.189.451-2.07-10.478-2.187-.453 2.068zm1.359-5.056l9.705 4.53.903-1.95-9.706-4.53-.902 1.936v.014zm2.715-4.785l8.217 6.855 1.359-1.62-8.216-6.853-1.35 1.617-.01.001zM15.751 0l-1.746 1.294 6.405 8.604 1.746-1.294L15.749 0h.002z"/>
+            </svg>
+            </a>
+        </g>
+        <g>
+            <circle class="point" id="point" r="4" cx="250" cy="475" stroke="rgb(255,255,255)" stroke-width="1"
+                fill="rgb(230,230,230)" /><text pointer-events="none" dominant-baseline="middle" text-anchor="middle"
+                x="250" y="475" opacity="0%" dx="10">13</text></g>
+        <g>
+            <circle class="point" id="point" r="4" cx="350" cy="525" stroke="rgb(255,255,255)" stroke-width="1"
+                fill="rgb(230,230,230)" /><text pointer-events="none" dominant-baseline="middle" text-anchor="middle"
+                x="350" y="525" opacity="0%" dx="10">14</text></g>
+        <g>
+            <circle class="point" id="point" r="4" cx="450" cy="475" stroke="rgb(255,255,255)" stroke-width="1"
+                fill="rgb(230,230,230)" /><text pointer-events="none" dominant-baseline="middle" text-anchor="middle"
+                x="450" y="475" opacity="0%" dx="10">15</text></g>
+        <g>
+            <circle class="point" id="point" r="4" cx="450" cy="375" stroke="rgb(255,255,255)" stroke-width="1"
+                fill="rgb(230,230,230)" /><text pointer-events="none" dominant-baseline="middle" text-anchor="middle"
+                x="450" y="375" opacity="0%" dx="10">16</text></g>
+        <g>
+            <circle class="point" id="point" r="4" cx="550" cy="325" stroke="rgb(255,255,255)" stroke-width="1"
+                fill="rgb(230,230,230)" /><text pointer-events="none" dominant-baseline="middle" text-anchor="middle"
+                x="550" y="325" opacity="0%" dx="10">17</text></g>
+        <g>
+            <circle class="point" id="point" r="4" cx="250" cy="375" stroke="rgb(255,255,255)" stroke-width="1"
+                fill="rgb(230,230,230)" /><text pointer-events="none" dominant-baseline="middle" text-anchor="middle"
+                x="250" y="375" opacity="0%" dx="10">19</text></g>
+        <g>
+            <circle class="point" id="point" r="4" cx="350" cy="225" stroke="rgb(255,255,255)" stroke-width="1"
+                fill="rgb(230,230,230)" /><text pointer-events="none" dominant-baseline="middle" text-anchor="middle"
+                x="350" y="225" opacity="0%" dx="10">20</text></g>
+        <g>
+            <circle class="point" id="point" r="4" cx="550" cy="225" stroke="rgb(255,255,255)" stroke-width="1"
+                fill="rgb(230,230,230)" /><text pointer-events="none" dominant-baseline="middle" text-anchor="middle"
+                x="550" y="225" opacity="0%" dx="10">21</text></g>
+        <g>
+            <circle class="point" id="point" r="4" cx="250" cy="175" stroke="rgb(255,255,255)" stroke-width="1"
+                fill="rgb(230,230,230)" /><text pointer-events="none" dominant-baseline="middle" text-anchor="middle"
+                x="250" y="175" opacity="0%" dx="10">23</text></g>
+        <g>
+            <circle class="point" id="point" r="4" cx="350" cy="125" stroke="rgb(255,255,255)" stroke-width="1"
+                fill="rgb(230,230,230)" /><text pointer-events="none" dominant-baseline="middle" text-anchor="middle"
+                x="350" y="125" opacity="0%" dx="10">24</text></g>
+        <g>
+            <circle class="point" id="point" r="4" cx="450" cy="275" stroke="rgb(255,255,255)" stroke-width="1"
+                fill="rgb(230,230,230)" /><text pointer-events="none" dominant-baseline="middle" text-anchor="middle"
+                x="450" y="275" opacity="0%" dx="10">25</text></g>
+        <g>
+            <circle class="point" id="point" r="4" cx="350" cy="425" stroke="rgb(255,255,255)" stroke-width="1"
+                fill="rgb(230,230,230)" /><text pointer-events="none" dominant-baseline="middle" text-anchor="middle"
+                x="350" y="425" opacity="0%" dx="10">26</text></g>
+        <g>
+            <circle class="point" id="point" r="4" cx="350" cy="25" stroke="rgb(255,255,255)" stroke-width="1"
+                fill="rgb(230,230,230)" /><text pointer-events="none" dominant-baseline="middle" text-anchor="middle"
+                x="350" y="25" opacity="0%" dx="10">27</text></g>
+        <g>
+            <circle class="point" id="point" r="4" cx="250" cy="75" stroke="rgb(255,255,255)" stroke-width="1"
+                fill="rgb(230,230,230)" /><text pointer-events="none" dominant-baseline="middle" text-anchor="middle"
+                x="250" y="75" opacity="0%" dx="10">28</text></g>
+        <g>
+            <circle class="point" id="point" r="4" cx="450" cy="75" stroke="rgb(255,255,255)" stroke-width="1"
+                fill="rgb(230,230,230)" /><text pointer-events="none" dominant-baseline="middle" text-anchor="middle"
+                x="450" y="75" opacity="0%" dx="10">29</text></g>
+    </g>
+</svg>

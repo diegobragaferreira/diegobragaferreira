@@ -199,6 +199,22 @@ li:last-child {
     left: 100%;
 }*/
 
+.svg-tn-contacts
+{
+  float: left; 
+  padding: 6px; 
+  margin: 4px; 
+  width: 35%; 
+  background-color: var(--blightgray);
+}
+
+body.dark-mode .svg-tn-contacts
+{
+  background-color: rgb(230, 230, 230);
+  filter: invert(100%);
+  /*filter: invert(20%) brightness(30%);*/
+}
+
 .svg-tn
 {
   float: left; 
@@ -278,13 +294,8 @@ a svg:hover, a svg:active
  fill: var(--bblue);
 }
 
-.network-grid {
-  display: grid; 
-  grid-template-columns: 50px 50px 50px 50px; 
-  grid-gap: 2px; 
-  float: right; 
-  justify-items: center; 
-  align-items: center
+.svg-tn {
+  float: right
 }
 
 .svg-board
