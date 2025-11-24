@@ -5,14 +5,49 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/main.css">
     <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Darker+Grotesque:wght@400&display=swap" rel="stylesheet">
-    <title>Tensor Network Editor</title>
+    <link href="https://fonts.googleapis.com/css2?family=Darker+Grotesque:wght@400;600&display=swap" rel="stylesheet">
+    <title>Tensor Network Editor - Diego Ferreira</title>
 
-    <script>
-      const theme = localStorage.getItem("theme");
-      if (theme) { document.body.classList.add(theme);};
-    </script>
-    
+    <style>
+      /* Faz os botões <button> parecerem com o link <a> do CV */
+      button.button-link {
+        border: none;
+        cursor: pointer;
+        font-family: 'Darker Grotesque', serif;
+        font-size: 18px;
+        margin: 0 4px 10px 0;
+      }
+      
+      /* --- CORREÇÃO DO BOTÃO DOWNLOAD --- */
+      /* Define uma cor fixa e escura para garantir contraste com o texto branco */
+      #savedlink {
+        background-color: #4A5568; /* Slate Gray (Cinza Azulado Elegante) */
+        margin: 0 4px 10px 0;
+      }
+      
+      #savedlink:hover {
+        background-color: #2D3748; /* Mais escuro no hover */
+        transform: translateY(-2px);
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      }
+
+      /* Centraliza e destaca o SVG */
+      #wrapper {
+        margin: 20px 0;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        border-radius: 4px;
+        overflow: hidden;
+        background-color: var(--bwhite);
+        border: 1px solid var(--bblue);
+        box-sizing: border-box;
+        width: 100%;
+      }
+
+      .controls-area {
+        text-align: center;
+        margin-bottom: 40px;
+      }
+    </style>
 </head>
 
 <body>
@@ -22,52 +57,71 @@
     <ul>
       <li><a href="index.html">home</a></li>
       <li class="active"><a href="tneditor.html">tensor network editor</a></li>
+      
+      <li style="float: right; padding: 7px 20px 0 0;">
+        <label class="switch">
+          <input class="input" type="checkbox" id="darkmodecb" onclick="toggledarkmode()">
+          <span class="slider round"></span>
+        </label>
+      </li>
     </ul>
   </nav>
 </header>
 
 <main>
-  <h2 class="titlename">Tensor Network Editor</h2>
+  <h1 class="titlename">Tensor Network Editor</h1>
+  
   <div id="wrapper">
-    <svg id="svg-board" class="svg-board" style="width: 100%"></svg>
+    <svg id="svg-board" class="svg-board" style="width: 100%; display: block;"></svg>
   </div>
 
-  <p>
-    <button id="clearBtn">clear</button>
-    <button id="gridBtn">grid</button>
-    <button id="drawBtn">draw</button>
-    <button id="moveBtn">move</button>
-    <button id="saveBtn">save</button>
-    <a id="savedlink" download="tn_svg_figure" style="padding: 6px;">download</a>
-  </p>
-
-  <h3 class="decorated-title"><span>Help</span></h3>
-
-  <p>
-    "Clear" resets the scene and erase all tensors and links. "Grid" change between
-    {none, square, diamond, isometrical} grids and snaps the tensors in it.
-    "Draw" button selects draw mode: 1 click in blank creates a tensor, 1 click
-    in tensor selects it until another tensor (or point in blank) is selected
-    to then be connected, 2 clicks erases a tensor or point. "Move" button enables
-    the indexing and selected tensors or points can be moved freely. "Save" button saves 
-    the state of the diagram, and put it in "download" link to be downloaded.
-    This is a "working in progress" and feedback is appreciated (contact@diegoferreira.net).
-  </p>
-
-  <!--<div id="svgcode" style="line-height: 0.8; font-size: 8;"></div>-->
+<div class="controls-area">
+    <button id="clearBtn" class="button-link">clear</button>
+    <button id="gridBtn" class="button-link">grid</button>
+    <button id="drawBtn" class="button-link">draw</button>
+    <button id="moveBtn" class="button-link">move</button>
+    <button id="saveBtn" class="button-link">save</button>
     
-  <!--<form>
-    <input type="radio" id="square" name="grid" value="square" checked>
-    <label for="male">square</label><br>
-    <input type="radio" id="diamond" name="grid" value="diamond">
-    <label for="female">diamond</label><br>
-    <input type="radio" id="isometric" name="grid" value="isometric">
-    <label for="other">isometric</label>
-  </form>-->
+    <a id="savedlink" download="tn_svg_figure" class="button-link">
+      download svg
+    </a>
+  </div>
+
+  <div style="background-color: var(--bwhite); padding: 20px; border-radius: 8px; border: 1px solid var(--bgray);">
+      <h3 class="decorated-title" style="margin-top: 0;"><span>Instructions</span></h3>
+      <ul style="position: relative; top: 0; padding-left: 20px; background: none; width: auto; list-style-type: disc;">
+        <li style="float: none; width: 100%; text-align: left; padding: 4px 0; color: var(--bblack);">
+            <strong>Draw Mode:</strong> Click on blank space to create a tensor. Click a tensor to select it, then click another to connect.
+        </li>
+        <li style="float: none; width: 100%; text-align: left; padding: 4px 0; color: var(--bblack);">
+            <strong>Erase:</strong> Double-click a tensor or point to remove it.
+        </li>
+        <li style="float: none; width: 100%; text-align: left; padding: 4px 0; color: var(--bblack);">
+            <strong>Move Mode:</strong> Enables dragging tensors freely.
+        </li>
+        <li style="float: none; width: 100%; text-align: left; padding: 4px 0; color: var(--bblack);">
+            <strong>Grid:</strong> Change grid snapping (Square, Diamond, Isometric).
+        </li>
+      </ul>
+  </div>
+
+    <em>This is a work in progress. Feedback is appreciated at <a href="mailto:contact@diegoferreira.net">contact@diegoferreira.net</a>.</em>
+  </p>
 
   <script src="js/tensor.js"></script>
   <script src="js/savesvg.js"></script>
-  </main>
+  
+</main>
+
+<script>
+  const theme = localStorage.getItem("theme")
+  if (theme) { document.body.classList.add(theme); document.getElementById("darkmodecb").checked = true }
+  const toggledarkmode = () => { 
+    document.body.classList.toggle("dark-mode")
+    const theme = localStorage.getItem("theme")
+    if (theme) { localStorage.removeItem("theme") } else { localStorage.setItem("theme","dark-mode") }
+  }
+</script>
 
 </body>
 </html>

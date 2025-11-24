@@ -6,13 +6,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="css/main.css">
   <link rel="preconnect" href="https://fonts.gstatic.com">
-  <link href="https://fonts.googleapis.com/css2?family=Darker+Grotesque:wght@400&display=swap" rel="stylesheet">
-  <!--link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"-->
-  <!--link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css"-->
-  <!-- for academic icons info: https://jpswalsh.github.io/academicons/-->
-
-  <title>Diego Ferreira</title>
-
+  <link href="https://fonts.googleapis.com/css2?family=Darker+Grotesque:wght@400;600&display=swap" rel="stylesheet">
+  
+  <title>Diego Ferreira - Technical Lead in Quantum</title>
 </head>
 
 <body>
@@ -20,26 +16,35 @@
 <header style="width: inherit">
   <nav style="width: inherit">
     <ul>
-      <li class="active"><a href="index.html">home</a></li>
-      <li><a href="tneditor.html">tensor network editor</a></li>
+      <li class="active"><a href="index.html">Home</a></li>
+      <li><a href="tneditor.html">Tensor network editor</a></li>
+      
+      <li style="float: right; padding: 7px 20px 0 0;">
+        <label class="switch">
+          <input class="input" type="checkbox" id="darkmodecb" onclick="toggledarkmode()">
+          <span class="slider round"></span>
+        </label>
+        </li>
     </ul>
   </nav>
 </header>
 
 <main>
-  <h1 class="titlename">Diego  Ferreira</h1>
+  <h1 class="titlename">Diego Ferreira</h1>
 
-  <div class="myinfo">
+<div class="myinfo">
     <div class="mypic-wrapper">
-      <img class="mypicblur" src="images/me.jpg" alt="blured background">
-      <img class="mypic" src="images/me.jpg" alt="my selfie">
+      <img class="mypic" src="images/me.jpg" alt="Diego Ferreira">
     </div>
 
     <div class="contactinfo">
       <p>
-        contact@diegoferreira.net
-        <br>diegobragaferreira@gmail.com
-        <br>ferreira@fisica.ufmg.br
+        <strong>Technical Lead in Quantum Computing</strong><br>
+        Inter Bank<br>
+        <br>
+        <a href="mailto:ferreira@fisica.ufmg.br">ferreira@fisica.ufmg.br</a><br>
+        <a href="mailto:diegobragaferreira@gmail.com">diegobragaferreira@gmail.com</a><br>
+        <a href="https://www.linkedin.com/in/diego-braga-ferreira">LinkedIn Profile</a>
       </p>
     </div>
   </div>
@@ -49,25 +54,121 @@
   <object class="svg-tn-contacts" data="images/abstract_tn.svg" ></object>
 
   <p>
-    I am a researcher scientist and PhD physics student at Federal University of Minas Gerais, Brazil,
-    and I work with various topics in Quantum Information and Condensed Matter Systems.
-    Specifically, I develop and apply Tensor Network techniques to theoretically
-    study the dynamics of Quantum many-body systems.
-    I have some experience in program development and simulations, using
-    C++, Matlab and Fortran, as well as in analytical solutions of selected models.
-    My interest is advance the tensor network mathematical framework and solve
-    frontier science problems.
+    I am a <strong>Senior Research Specialist and Technical Lead</strong> at <strong>Inter Bank</strong>, 
+    where I am part of a multidisciplinary applied science team focused on Machine Learning, Generative AI, and Quantum Computing.
+  </p>
+  <p>
+    With a Ph.D. in Physics from UFMG, my expertise bridges theoretical rigor and industrial application.
+    I specialize in developing <strong>Quantum Machine Learning (QML)</strong> algorithms for financial applications
+    (such as fraud detection and portfolio optimization) and evolutionary coding agents. Previously, I worked as a 
+    Senior Data Engineer Consultant at EY.
   </p>
 
-  <p>
-    Get my <a href="">curriculum vitae</a>,
-    <a href="https://lattes.cnpq.br/6862556670963748">lattes</a>,
-    or see my <a href="https://scholar.google.com/citations?user=6i7I6wUAAAAJ&hl=en">google schoolar profile</a>.
+<p class="cv-download-section">
+    <a href="https://github.com/diegobragaferreira/CV/releases/latest/download/Diego_Ferreira_CV.pdf" 
+       class="button-link" 
+       target="_blank" 
+       rel="noopener noreferrer">
+      Open / Download CV
+    </a>
+    &nbsp;&nbsp;
+    <a href="https://scholar.google.com/citations?user=6i7I6wUAAAAJ&hl=en">Google Scholar</a>
+    &nbsp;|&nbsp;
+    <a href="https://lattes.cnpq.br/6862556670963748">Lattes</a>
   </p>
+
+  <h3 class="decorated-title"><span>Recent Research & Productions</span></h3>
+
+  <h4>2025 - Industry & Applied Science</h4>
+  
+  <table>
+    <tr class="article">
+      <td class="year">2025</td>
+      <td class="entry">
+        <div class="title">CodeEvolve: An open source evolutionary coding agent for algorithm discovery and optimization</div>
+        <div class="authors">Henrique Assumpção, <b>Diego Ferreira</b>, Leandro Campos, Fabricio Murai</div>
+        <a href="https://arxiv.org/abs/2510.14150" class="link">arXiv:2510.14150</a>
+        <span class="tag">AI Agent</span>
+      </td>
+    </tr>
+
+    <tr class="article">
+      <td class="year">2025</td>
+      <td class="entry">
+        <div class="title">Hardware Efficient Framework for QAOA</div>
+        <div class="authors">Thiago Assis, ..., <b>Diego Ferreira</b>, ..., Gabriel Coutinho</div>
+        <div class="link">Published at VIII WECIQ (Workshop-Escola de Computação e Informação Quântica)</div>
+        <span class="tag">Quantum Hardware</span>
+      </td>
+    </tr>
+
+    <tr class="article">
+      <td class="year">2025</td>
+      <td class="entry">
+        <div class="title">Evaluating Quantum Feature Maps for Credit Card Fraud Classification</div>
+        <div class="authors">Pedro Albuquerque, Henrique Assumpção, <b>Diego Ferreira</b>, Gabriel Coutinho</div>
+        <div class="link">Published at VIII WECIQ</div>
+        <span class="tag">QML / Finance</span>
+      </td>
+    </tr>
+  </table>
+
+  <h4>Academic Background (Physics)</h4>
+
+  <table>
+    <tr class="article">
+      <td class="year">2022</td>
+      <td class="entry">
+        <div class="title">Quantum correlations, entanglement spectrum, and coherence of the two-particle reduced density matrix in the extended Hubbard model</div>
+        <div class="authors"><b>Diego L. B. Ferreira</b>, Tiago O. Maciel, Reinaldo O. Vianna, Fernando Iemini</div>
+        <a href="https://arxiv.org/abs/2111.00085" class="link">arXiv:2111.00085</a>
+        <a href="https://journals.aps.org/prb/abstract/10.1103/PhysRevB.105.115145" class="link">Phys. Rev. B 105, 115145</a>
+      </td>
+    </tr>
+
+    <tr class="article">
+      <td class="year">2022</td>
+      <td class="entry">
+        <div class="title">Quantum Statistical Complexity Measure as a Signalling of Correlation Transitions</div>
+        <div class="authors">André T. Cesário, <b>Diego L. B. Ferreira</b>, Tiago Debarba, Fernando Iemini, Thiago O. Maciel, Reinaldo O. Vianna</div>
+        <a href="https://arxiv.org/abs/2002.01590" class="link">arXiv:2002.01590</a>
+        <a href="https://www.mdpi.com/1099-4300/24/8/1161" class="link">Entropy 24(8), 1161</a>
+      </td>
+    </tr>
+
+    <tr class="article">
+      <td class="year">2021</td>
+      <td class="entry">
+        <div class="title">Determination of the critical exponents in dissipative phase transitions: coherent anomaly approach</div>
+        <div class="authors">Jiasen Jin, Wen-Bin He, Fernando Iemini, <b>Diego Ferreira</b>, Ying-Dan Wang, Stefano Chesi, Rosario Fazio</div>
+        <a href="https://arxiv.org/abs/2103.07255" class="link">arXiv:2103.07255</a>
+        <a href="https://journals.aps.org/prb/abstract/10.1103/PhysRevB.104.214301" class="link">Phys. Rev. B 104, 214301</a>
+      </td>
+    </tr>
+
+    <tr class="article">
+      <td class="year">2019</td>
+      <td class="entry">
+        <div class="title">Probing Genuine Multipartite Entanglement in Large Systems</div>
+        <div class="authors">Lucas B. Vieira, <b>Diego L. Braga Ferreira</b>, Thiago O. Maciel and Reinaldo O. Vianna</div>
+        <a href="https://arxiv.org/abs/1911.04649" class="link">arXiv:1911.04649</a>
+      </td>
+    </tr>
+
+    <tr class="article">
+      <td class="year">2018</td>
+      <td class="entry">
+        <div class="title">Completely positive maps for reduced states of indistinguishable particles</div>
+        <div class="authors">Leonardo da Silva Souza, Tiago Debarba, <b>Diego L. Braga Ferreira</b>, Fernando Iemini, and Reinaldo O. Vianna</div>
+        <a href="https://arxiv.org/abs/1807.07175" class="link">arXiv:1807.07175</a>
+        <a href="https://journals.aps.org/pra/abstract/10.1103/PhysRevA.98.052135" class="link">Phys. Rev. A 98, 052135</a>
+      </td>
+    </tr>
+  </table>
 
   <h3 class="decorated-title"><span>What is a Tensor Network?</span></h3>
 
-  <img class="svg-tn" src="images/peps.svg" alt="peps"></img>
+  <img class="svg-tn" src="images/peps.svg" alt="peps">
   
   <p>
     Quantum operators can be represented as a network of connected tensors, often involving some manipulation of these network in a way
@@ -92,90 +193,7 @@
     to play guitar and to go walking while listening to music.
   </p>
 
-  <h3 class="decorated-title"><span>Scientific Productions</span></h3>
-
-  <h4>Articles</h4>
-  
-  <table>
-
-    <tr class="article">
-      <td class="year">2022</td>
-      <td class="entry">
-        <div class="title">Quantum correlations, entanglement spectrum, and coherence of the two-particle reduced density matrix in the extended Hubbard model</div>
-        <div class="authors"><b>Diego L. B. Ferreira</b>, Thiago O. Maciel, Reinaldo O. Vianna, Fernando Iemini</div>
-        <a href="https://arxiv.org/abs/2111.00085" class="link">arXiv:2111.00085</a>
-        <a href="https://journals.aps.org/prb/abstract/10.1103/PhysRevB.105.115145" class="link">Phys. Rev. B 105, 115145</a>
-        </a>
-      </td>
-    </tr>
-
-    <tr class="article">
-      <td class="year">2021</td>
-      <td class="entry">
-        <div class="title">Determination of the critical exponents in dissipative phase transitions: coherent anomaly approach</div>
-        <div class="authors">Jiasen Jin, Wen-Bin He, Fernando Iemini, <b>Diego Ferreira</b>, Ying-Dan Wang, Stefano Chesi, Rosario Fazio</div>
-        <a href="https://arxiv.org/abs/2103.07255" class="link">arXiv:2103.07255</a>
-        <a href="https://journals.aps.org/prb/abstract/10.1103/PhysRevB.104.214301" class="link">Phys. Rev. B 104, 214301</a>
-      </td>
-    </tr>
-
-    <tr class="article">
-      <td class="year">2020</td>
-      <td class="entry">
-        <div class="title">Quantum Statistical Complexity Measure as a Signalling of Correlation Transitions</div>
-        <div class="authors">André T. Cesário, <b>Diego L. B. Ferreira</b>, Tiago Debarba, Fernando Iemini, Thiago O. Maciel, Reinaldo O. Vianna</div>
-        <a href="https://arxiv.org/abs/2002.01590" class="link">arXiv:2002.01590</a>
-      </td>
-    </tr>
-
-    <tr class="article">
-      <td class="year">2019</td>
-      <td class="entry">
-        <div class="title">Probing Genuine Multipartite Entanglement in Large Systems</div>
-        <div class="authors">Lucas B. Vieira, <b>Diego L. Braga Ferreira</b>, Thiago O. Maciel and Reinaldo O. Vianna</div>
-        <a href="https://arxiv.org/abs/1911.04649" class="link">arXiv:1911.04649</a>
-      </td>
-    </tr>
-
-    <tr class="article">
-      <td class="year">2018</td>
-      <td class="entry">
-        <div class="title">Completely positive maps for reduced states of indistinguishable particles</div>
-        <div class="authors">Leonardo da Silva Souza, Tiago Debarba, <b>Diego L. Braga Ferreira</b>, Fernando Iemini, and Reinaldo O. Vianna</div>
-        <a href="https://arxiv.org/abs/1807.07175" class="link">arXiv:1807.07175</a>
-        <a href="https://journals.aps.org/pra/abstract/10.1103/PhysRevA.98.052135" class="link">Physical Review A, 98 052135</a>
-      </td>
-    </tr>
-  </table>
-
-  <h4>Posters</h4>
-  
-  <table>
-    <tr class="article">
-      <td class="year">2019</td>
-      <td class="entry">
-        <div class="title">Tensor Network Techniques applied in the Extended Hubbard Model</div>
-        <div class="authors"><b>Diego L. Braga Ferreira</b>, Thiago O. Maciel, Fernando Iemini and Reinaldo O. Vianna</div>
-        <div class="link">Presented at "Tensor Network based approaches to Quantum Many-Body Systems", Donostia International Physics Center, Donostia-San Sebastián, Spain</div>
-      </td>
-    </tr>
-
-    <tr class="article">
-      <td class="year">2018</td>
-      <td class="entry">
-        <div class="title">Tensor Network Techniques applied in the Extended Hubbard Model</div>
-        <div class="authors"><b>Diego L. Braga Ferreira</b>, Thiago O. Maciel, Fernando Iemini and Reinaldo O. Vianna</div>
-        <div class="link">Presented at "Summer School on Collective Behaviour in Quantum Matter", ICTP, Trieste, Italy</div>
-      </td>
-    </tr>
-  </table>
-
 </main>
-
-<label class="switch" style="float: right">dark mode
-  <input class="input" type="checkbox" id="darkmodecb" onclick="toggledarkmode()">
-  <span class="slider round"></span>
-</label>
 
 <script>
   const theme = localStorage.getItem("theme")
