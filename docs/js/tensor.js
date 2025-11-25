@@ -182,6 +182,10 @@ class visualTensor {
         this.pressTensorEventHandler = (e, t) => {
             e.stopPropagation();
             this.lastEvent = e;
+            // For touch events, prevent the browser from firing a subsequent 'mousedown' event.
+            if (window.TouchEvent && e instanceof TouchEvent) {
+                e.preventDefault();
+            }
             // Grace period for new tensors on touch devices to prevent instant selection.
             if (t.justCreated) {
                 t.justCreated = false;
