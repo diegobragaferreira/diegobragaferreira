@@ -426,6 +426,7 @@ class visualTensor {
     pressBackgroundHandler() {
         switch (this.state) {
             case AppState.DRAW_IDLE:
+                this.lastEvent.stopPropagation(); // Prevent event from bubbling to the new tensor
                 // Create a new tensor on the canvas
                 const { x, y } = this.getPointerPosition(this.lastEvent);
                 this.createTensor(x, y);
