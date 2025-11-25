@@ -2,13 +2,19 @@ class SaveSVG
 {
     constructor()
     {
-        document.getElementById("saveBtn").addEventListener("click", this.download);
+        const saveBtn = document.getElementById("saveBtn");
+        if (saveBtn) {
+            saveBtn.addEventListener("click", this.download);
+        }
     }
 
     private download = () =>
     {
-        let svgref = document.getElementById("svg-board") as HTMLElement & SVGGraphicsElement;
-        
+        const svgref = document.getElementById("svg-board") as SVGSVGElement | null;
+        if (!svgref) {
+            return;
+        }
+
         let bbox = svgref.getBBox();
         console.log("bouding box: ",bbox.x,bbox.y,bbox.width,bbox.height);
         let svg = svgref.cloneNode(true) as HTMLElement;
@@ -34,7 +40,10 @@ class SaveSVG
 
         let url = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(source);
 
-        document.getElementById("savedlink").setAttribute("href",url);
+        const savedLink = document.getElementById("savedlink");
+        if (savedLink) {
+            savedLink.setAttribute("href", url);
+        }
     }
 }
 

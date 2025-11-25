@@ -3,12 +3,12 @@ class index
     static counter: number = 0;
     static pendingIDs: Array<number> = [];
 
-    public id: number;
+    public id!: number;
     
-    public mIndex: SVGGElement;
-    public line: SVGLineElement;
-    public circle: SVGCircleElement;
-    public text: SVGTextElement;
+    public mIndex!: SVGGElement;
+    public line!: SVGLineElement;
+    public circle!: SVGCircleElement;
+    public text!: SVGTextElement;
 
     constructor(public X1: number, public X2: number, public Y1: number, public Y2: number)
     {
@@ -18,7 +18,7 @@ class index
 
     private createShapetext()
     {
-        this.id = index.pendingIDs.length>0 ? index.pendingIDs.pop() : this.id = index.counter+1;
+        this.id = index.pendingIDs.pop() ?? ++index.counter;
   
         let mIndex: SVGGElement = document.createElementNS("http://www.w3.org/2000/svg","g");
         let line: SVGLineElement = document.createElementNS("http://www.w3.org/2000/svg","line");
@@ -33,7 +33,6 @@ class index
         line.setAttribute("stroke","black");
         line.setAttribute("stroke-width","1");
 
-        // temporary solution to highlight the text above the line
         let Xm = Math.floor(this.X1+this.X2)/2;
         let Ym = Math.floor(this.Y1+this.Y2)/2;
         
@@ -101,14 +100,15 @@ class tensor
     static counter: number = 0;
     static pendingIDs: Array<number> = [];
 
-    public id: number;
+    public id!: number;
 
-    public mTensor: SVGGElement;
-    public shape: SVGCircleElement;
-    public text: SVGTextElement;
+    public mTensor!: SVGGElement;
+    public shape!: SVGCircleElement;
+    public text!: SVGTextElement;
 
     public legsRefs: Array<index> = [];
     public whichPoint: Array<boolean> = [];
+    public isPoint: boolean = false;
 
     constructor(public posX: number, public posY: number, public radius: number = 20)
     {
@@ -118,7 +118,7 @@ class tensor
 
     private createShapetext()
     {
-        this.id = tensor.pendingIDs.length>0 ? tensor.pendingIDs.pop() : this.id = tensor.counter+1;
+        this.id = tensor.pendingIDs.pop() ?? ++tensor.counter;
   
         console.log("create tensor with: cx = " + this.posX + " cy = " + this.posY + " and ID: " + this.id);
 
@@ -184,6 +184,18 @@ enum mode
     move
 };
 
+// A strict state machine to manage the application's behavior.
+enum AppState {
+    // Move Mode States
+    MOVE_IDLE,          // Default state in move mode.
+    MOVE_TENSOR_DRAGGING, // A tensor is being actively dragged.
+
+    // Draw Mode States
+    DRAW_IDLE,          // Default state in draw mode.
+    DRAW_PREVIEWING,    // A tensor is selected, and the blue line is following the mouse.
+}
+
+
 // all types of grids
 // superposed grid in future:
 // https://stackoverflow.com/questions/39359740/what-are-enum-flags-in-typescript
@@ -203,10 +215,10 @@ interface select<T>
 
 class visualTensor
 {
-    private svgElement: HTMLElement;
-    private divWrapper: HTMLElement;
+    private svgElement: SVGSVGElement;
+    private divWrapper: HTMLElement | null;
 
-    private width: number;
+    private width: number = 0;
     private height: number;
     private offsetX: number;
     private offsetY: number;
@@ -222,37 +234,34 @@ class visualTensor
     private indexesArray: Array<index> = [];
     private tensorsArray: Array<tensor> = [];
 
-    private mode: mode = mode.draw;
-
-    private selectedTensor: select<tensor> = {isSelected: false};
-    private selectedIndex: select<index> = {isSelected: false};
-
-    private placeholderIndex: index;
-
-    private paint: boolean;
-    private clickX: number[] = [];
-    private clickY: number[] = [];
-    private clickDrag: boolean[] = [];
+    // --- State Machine Properties ---
+    private state: AppState = AppState.DRAW_IDLE;
+    private activeTensor?: tensor; // The tensor being dragged or the source of a connection.
+    private placeholderIndex?: index;
+    private lastEvent: MouseEvent | TouchEvent = new MouseEvent('mousedown');
+    private currentMode: mode = mode.draw;
+    private boundDragHandler?: (e: MouseEvent | TouchEvent) => void;
+    private boundReleaseHandler?: () => void;
 
     constructor()
     {
-        let svgElement = document.getElementById('svg-board') as HTMLElement;
-        let divWrapper = document.getElementById('wrapper') as HTMLElement;
+        this.svgElement = document.getElementById('svg-board') as unknown as SVGSVGElement;
+        this.divWrapper = document.getElementById('wrapper');
 
-        //display: block;?
-        //svgElement.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
-        //svgElement.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink');
+        if (!this.svgElement || !this.divWrapper) {
+            console.error("Required elements not found in the DOM.");
+            this.height = 0;
+            this.offsetX = 0;
+            this.offsetY = 0;
+            return;
+        }
 
-        this.svgElement = svgElement;
-        this.divWrapper = divWrapper;
-        this.width = svgElement.clientWidth;
-        this.height = svgElement.clientHeight;
-        this.offsetX = this.divWrapper.offsetLeft + this.svgElement.clientLeft;
-        this.offsetY = this.divWrapper.offsetTop + this.svgElement.clientTop;
-        
-        console.log("svg element wth: " + this.width + " and " + this.height);
-        console.log("div offset : " + this.divWrapper.offsetLeft + " " + this.divWrapper.offsetTop);
-        console.log("border offset : " + this.svgElement.clientLeft + " " + this.svgElement.clientTop);
+        this.width = this.svgElement.clientWidth;
+        this.height = this.svgElement.clientHeight;
+
+        // These will be updated on pointer events to account for scroll
+        this.offsetX = 0;
+        this.offsetY = 0;
 
         //if (!this.snapToGrid) this.gridGroup.setAttribute("opacity","0");
         this.drawGrid();
@@ -266,6 +275,25 @@ class visualTensor
         this.tensorsGroup.setAttribute("id","tensors");
 
         this.createUserEvents();
+    }
+
+    private getPointerPosition(e: MouseEvent | TouchEvent): { x: number, y: number } {
+        const svgRect = this.svgElement.getBoundingClientRect();
+        let pointerX = 0;
+        let pointerY = 0;
+
+        if (window.TouchEvent && e instanceof TouchEvent && e.touches.length > 0) {
+            pointerX = e.touches[0].clientX;
+            pointerY = e.touches[0].clientY;
+        } else {
+            pointerX = (e as MouseEvent).clientX;
+            pointerY = (e as MouseEvent).clientY;
+        }
+
+        return {
+            x: pointerX - svgRect.left,
+            y: pointerY - svgRect.top
+        };
     }
 
     private drawGrid()
@@ -334,6 +362,7 @@ class visualTensor
         line.setAttribute("x2",String(x2));
         line.setAttribute("y1",String(y1));
         line.setAttribute("y2",String(y2));
+        line.setAttribute("pointer-events", "none"); // Allow clicks to pass through the grid
         line.setAttribute("style","stroke:rgb(192,192,192);stroke-width:1;stroke-dasharray:6 4");
 
         gridGroup.appendChild(line);
@@ -341,153 +370,215 @@ class visualTensor
 
     private createUserEvents()
     {
-
         this.svgElement.addEventListener("mousedown", this.pressEventHandler);
-        this.svgElement.addEventListener("mousemove", this.dragEventHandler);
-        this.svgElement.addEventListener("mouseup", this.releaseEventHandler);
-        this.svgElement.addEventListener("mouseout", this.cancelEventHandler);
-
+        // The new listener for the connection preview, which does not require holding the mouse button.
+        this.svgElement.addEventListener("mousemove", this.previewMoveHandler);
         this.svgElement.addEventListener("touchstart", this.pressEventHandler);
-        this.svgElement.addEventListener("touchmove", this.dragEventHandler);
-        this.svgElement.addEventListener("touchend", this.releaseEventHandler);
-        this.svgElement.addEventListener("touchcancel", this.cancelEventHandler);
 
-        document.getElementById('clearBtn').addEventListener("click", this.clearEventHandler);
-        document.getElementById('gridBtn').addEventListener("click", this.toggleGridHandler);
-        document.getElementById('drawBtn').addEventListener("click", this.drawEventHandler);
-        document.getElementById('moveBtn').addEventListener("click", this.moveEventHandler);
+        const clearBtn = document.getElementById('clearBtn');
+        if (clearBtn) clearBtn.addEventListener("click", this.clearEventHandler);
+        const gridBtn = document.getElementById('gridBtn');
+        if (gridBtn) gridBtn.addEventListener("click", this.toggleGridHandler);
+        const drawBtn = document.getElementById('drawBtn');
+        if (drawBtn) drawBtn.addEventListener("click", this.drawEventHandler);
+        const moveBtn = document.getElementById('moveBtn');
+        if (moveBtn) moveBtn.addEventListener("click", this.moveEventHandler);
     }
+
+    private pressTensorEventHandlerMap: Map<number, (e: MouseEvent | TouchEvent) => void> = new Map();
 
     private createTensorEvents(t: tensor)
     {
-        t.shape.addEventListener("mousedown", (e) => this.pressTensorEventHandler(e,t));   
-        t.shape.addEventListener("touchstart", (e) => this.pressTensorEventHandler(e,t));
+        const handler = (e: MouseEvent | TouchEvent) => this.pressTensorEventHandler(e, t);
+        this.pressTensorEventHandlerMap.set(t.id, handler);
+        t.shape.addEventListener("mousedown", handler);
+        t.shape.addEventListener("touchstart", handler);
     }
 
     private removeTensorEvents(t: tensor)
     {
-        t.shape.removeEventListener("mousedown", (e) => this.pressTensorEventHandler(e,t));
-        t.shape.addEventListener("touchstart", (e) => this.pressTensorEventHandler(e,t));
+        const handler = this.pressTensorEventHandlerMap.get(t.id);
+        if (handler) {
+            t.shape.removeEventListener("mousedown", handler);
+            t.shape.removeEventListener("touchstart", handler);
+            this.pressTensorEventHandlerMap.delete(t.id);
+        }
     }
+
+    // --- State-based Event Handlers ---
 
     private pressTensorEventHandler = (e: MouseEvent | TouchEvent, t: tensor) =>
     {
         e.stopPropagation();
-        this.addTensorClick(t);
-    }
+        this.lastEvent = e;
 
-    private addTensorClick(t: tensor)
-    {
-        switch (this.mode)
-        {
-            case (mode.draw):
-            {
-                if(!this.selectedTensor.isSelected)
-                {
-                    this.selectedTensor.isSelected = true;
-                    this.selectedTensor.obj = t;
-                    t.shape.setAttribute("stroke-width","2");
-
-                    this.placeholderIndex = this.createIndex(this.selectedTensor.obj.posX,this.selectedTensor.obj.posX,this.selectedTensor.obj.posY,this.selectedTensor.obj.posY);
-                    this.placeholderIndex.text.textContent = "";
-                    this.placeholderIndex.line.setAttribute("style","stroke:rgb(20,20,140)");
-                    //this.indexesGroup.appendChild(this.placeholderIndex.mIndex);
-                }
-                else
-                {
-                    this.selectedTensor.isSelected = false;
-                    if (t.id === this.selectedTensor.obj.id)
-                    {
-                        this.deleteIndex(this.placeholderIndex,false);
-                        this.deleteTensor(t);
-                    }
-                    else
-                    {
-                        this.deleteIndex(this.placeholderIndex,false);
-                        this.selectedTensor.obj.shape.setAttribute("stroke-width","1");
-
-                        let newIndex = this.createIndex(this.selectedTensor.obj.posX,t.posX,this.selectedTensor.obj.posY,t.posY);
-
-                        // pass references to which index is connected to each tensor - maybe abstract this a little more
-                        this.selectedTensor.obj.insertLegRef(newIndex,true);
-                        t.insertLegRef(newIndex,false);
-
-                    }
-                }
-
+        switch (this.state) {
+            case AppState.MOVE_IDLE:
+                // Start dragging a tensor
+                if (t.isPoint) return; // Cannot move points directly
+                this.state = AppState.MOVE_TENSOR_DRAGGING;
+                this.activeTensor = t;
+                t.shape.setAttribute("stroke-width", "2");
+                this.attachDragListeners();
                 break;
-            }
-            case (mode.move):
-            {
-                if(!this.selectedTensor.isSelected)
-                {
-                    this.selectedTensor.isSelected = true;
-                    this.selectedTensor.obj = t;
-                    t.shape.setAttribute("stroke-width","2");
-                }
-                else
-                {
-                    this.selectedTensor.isSelected = false;
-                    //this.selectedTensor.obj = null;
-                    t.shape.setAttribute("stroke-width","1");
-                }
 
+            case AppState.DRAW_IDLE:
+                // Start previewing a new connection
+                if (t.isPoint) return; // Cannot draw from a point
+                this.state = AppState.DRAW_PREVIEWING;
+                this.activeTensor = t;
+                t.shape.setAttribute("stroke-width", "2");
+                this.placeholderIndex = this.createIndex(t.posX, t.posX, t.posY, t.posY);
+                this.placeholderIndex.line.setAttribute("style", "stroke:rgb(20,20,140); stroke-dasharray: 6 4;");
+                this.placeholderIndex.line.setAttribute("pointer-events", "none"); // Allow clicks to pass through the preview line
                 break;
-            }
+
+            case AppState.DRAW_PREVIEWING:
+                // Complete the connection
+                if (this.activeTensor && this.activeTensor.id === t.id) {
+                    // Clicked the same tensor again: delete it.
+                    this.deleteTensor(t);
+                } else if (this.activeTensor) {
+                    // Clicked a different tensor: connect them.
+                    const newIndex = this.createIndex(this.activeTensor.posX, t.posX, this.activeTensor.posY, t.posY);
+                    this.activeTensor.insertLegRef(newIndex, true);
+                    t.insertLegRef(newIndex, false);
+                }
+                this.resetToIdleState();
+                break;
         }
     }
 
+    private pressBackgroundHandler() {
+        switch (this.state) {
+            case AppState.DRAW_IDLE:
+                // Create a new tensor on the canvas
+                const { x, y } = this.getPointerPosition(this.lastEvent);
+                this.createTensor(x, y);
+                break;
+
+            case AppState.DRAW_PREVIEWING:
+                // Create a dangling leg
+                if (this.activeTensor) {
+                    const { x, y } = this.getPointerPosition(this.lastEvent);
+                    const endPoint = this.createTensor(x, y, true);
+                    const newIndex = this.createIndex(this.activeTensor.posX, x, this.activeTensor.posY, y);
+                    this.activeTensor.insertLegRef(newIndex, true);
+                    endPoint.insertLegRef(newIndex, false);
+                }
+                this.resetToIdleState();
+                break;
+
+            case AppState.MOVE_IDLE:
+                // Future: could initiate canvas panning here. For now, does nothing.
+                break;
+        }
+    }
+
+    private dragHandler(e: MouseEvent | TouchEvent) {
+        if (this.state !== AppState.MOVE_TENSOR_DRAGGING) return;
+
+        const { x, y } = this.getPointerPosition(e);
+        if (this.activeTensor) {
+            let snapped = this.snap(x, y);
+            this.activeTensor.setPosition(snapped[0], snapped[1]);
+        }
+        e.preventDefault();
+    }
+
+    private previewMoveHandler = (e: MouseEvent | TouchEvent) => {
+        if (this.state !== AppState.DRAW_PREVIEWING) return;
+
+        const { x, y } = this.getPointerPosition(e);
+        if (this.placeholderIndex) {
+            let snapped = this.snap(x, y);
+            this.placeholderIndex.moveP2(snapped[0], snapped[1]);
+        }
+    }
+
+    private releaseHandler() {
+        if (this.state === AppState.MOVE_TENSOR_DRAGGING) {
+            this.detachDragListeners();
+            this.resetToIdleState();
+        }
+    }
+
+    // --- Utility and Helper Functions ---
+
+    private resetToIdleState() {
+        if (this.activeTensor) {
+            this.activeTensor.shape.setAttribute("stroke-width", "1");
+        }
+        if (this.placeholderIndex) {
+            this.deleteIndex(this.placeholderIndex, false);
+        }
+        this.activeTensor = undefined;
+        this.placeholderIndex = undefined;
+
+        // Determine the correct idle state based on the current mode
+        this.state = this.currentMode === mode.move ? AppState.MOVE_IDLE : AppState.DRAW_IDLE;
+    }
+
+    private attachDragListeners() {
+        const dragFunc = (e: MouseEvent | TouchEvent) => this.dragHandler(e);
+        const releaseFunc = () => this.releaseHandler();
+        window.addEventListener("mousemove", dragFunc);
+        window.addEventListener("mouseup", releaseFunc);
+        window.addEventListener("touchmove", dragFunc, { passive: false });
+        window.addEventListener("touchend", releaseFunc);
+
+        // Store references to remove them later
+        this.boundDragHandler = dragFunc;
+        this.boundReleaseHandler = releaseFunc;
+    }
+
+    private detachDragListeners() {
+        if (this.boundDragHandler) window.removeEventListener("mousemove", this.boundDragHandler);
+        if (this.boundReleaseHandler) window.removeEventListener("mouseup", this.boundReleaseHandler);
+        if (this.boundDragHandler) window.removeEventListener("touchmove", this.boundDragHandler);
+        if (this.boundReleaseHandler) window.removeEventListener("touchend", this.boundReleaseHandler);
+        this.boundDragHandler = undefined;
+        this.boundReleaseHandler = undefined;
+    }
+
+    // --- Original Methods (Refactored or Kept) ---
+
+    private pressIndexEventHandlerMap: Map<number, () => void> = new Map();
+
     private createIndexEvents(i: index)
     {
-        i.circle.addEventListener("mousedown", (e) => this.pressIndexEventHandler(e,i));   
-        i.circle.addEventListener("touchstart", (e) => this.pressIndexEventHandler(e,i));
+        // In draw mode, clicking an index deletes it.
+        const clickHandler = () => {
+            if (this.currentMode === mode.draw) {
+                this.deleteIndex(i, true);
+                this.resetToIdleState(); // Reset state after deletion
+            }
+        };
+        this.pressIndexEventHandlerMap.set(i.id, clickHandler);
+        i.circle.addEventListener("mousedown", clickHandler);
+        i.circle.addEventListener("touchstart", clickHandler);
     }
 
     private removeIndexEvents(i: index)
     {
-        i.circle.removeEventListener("mousedown", (e) => this.pressIndexEventHandler(e,i));
-        i.circle.addEventListener("touchstart", (e) => this.pressIndexEventHandler(e,i));
-    }
-
-    private pressIndexEventHandler = (e: MouseEvent | TouchEvent, i: index) =>
-    {
-        e.stopPropagation();
-        this.addIndexClick(i);
-    }
-
-    private addIndexClick(i: index)
-    {
-        switch (this.mode)
-        {
-            case (mode.draw):
-            {
-                //if(!this.selectedIndex.isSelected)
-                //{
-                    //this.selectedIndex.isSelected = true;
-                    //this.selectedIndex.obj = i;
-                    //i.line.setAttribute("style","stroke:black;stroke-width:2");
-                //}
-                //else
-                //{
-                    //this.selectedIndex.isSelected = false;
-                    //if (i === this.selectedIndex.obj)
-                    //{
-                        this.deleteIndex(i,true);
-                    //}
-                    //else
-                    //{
-                    //    i.line.setAttribute("style","stroke:black;stroke-width:1");
-                    //}
-                //}
-                break;
-            }
+        const handler = this.pressIndexEventHandlerMap.get(i.id);
+        if (handler) {
+            i.circle.removeEventListener("mousedown", handler);
+            i.circle.removeEventListener("touchstart", handler);
+            this.pressIndexEventHandlerMap.delete(i.id);
         }
     }
 
-    private createTensor(x: number, y: number): tensor
+    private createTensor(x: number, y: number, isPoint: boolean = false): tensor
     {
-        let newTensor = new tensor(x, y);
-        tensor.counter++;
+        let [snappedX, snappedY] = this.snap(x, y);
+        let newTensor = new tensor(snappedX, snappedY);
+        if (isPoint) {
+            newTensor.isPoint = true;
+            newTensor.shape.setAttribute("r", "4");
+            // Points should always be visible, overriding the mode's opacity setting.
+            newTensor.shape.setAttribute("opacity", "100%");
+        }
         this.createTensorEvents(newTensor);
         this.tensorsArray.push(newTensor);
         this.tensorsGroup.appendChild(newTensor.mTensor);
@@ -497,25 +588,29 @@ class visualTensor
     private deleteTensor(t: tensor, memory: boolean = true)
     {
         this.removeTensorEvents(t);
-        tensor.pendingIDs.push(t.id); 
+        tensor.pendingIDs.push(t.id);
         tensor.pendingIDs.sort((v1,v2) => (v2-v1));
-        tensor.counter--;
 
         if(memory)
         {
-            // here we have to delete not only the indexes, but all the references of all tensors!
-            t.legsRefs.forEach( (leg) => 
+            const legsToDelete = [...t.legsRefs];
+            legsToDelete.forEach( (leg) =>
             {
                 this.tensorsArray.forEach( (ten) =>
                 {
                     if (ten !== t)
                     {
                         let ind = ten.legsRefs.indexOf(leg,0);
-                        if(ind > -1) ten.legsRefs.splice(ind,1);
+                        if(ind > -1) {
+                            ten.legsRefs.splice(ind,1);
+                            if (ten.isPoint && ten.legsRefs.length === 0) {
+                                this.deleteTensor(ten, false);
+                            }
+                        }
                     }
                 });
                 this.deleteIndex(leg,false);
-            });    
+            });
         }
         
         this.tensorsGroup.removeChild(t.mTensor);
@@ -526,7 +621,6 @@ class visualTensor
     private createIndex(x1: number, x2: number, y1: number, y2: number): index
     {
         let newIndex = new index(x1,x2,y1,y2);
-        index.counter++;
         this.createIndexEvents(newIndex);
         this.indexesArray.push(newIndex);
         this.indexesGroup.appendChild(newIndex.mIndex);
@@ -537,11 +631,9 @@ class visualTensor
         this.removeIndexEvents(i);
         index.pendingIDs.push(i.id); 
         index.pendingIDs.sort((v1,v2) => (v2-v1));
-        index.counter--;
         
         if(memory)
         {
-            // make all tensors forget about me
             this.tensorsArray.forEach( (ten) =>
             {
                 let ind = ten.legsRefs.indexOf(i,0);
@@ -554,8 +646,10 @@ class visualTensor
         if(ind > -1) this.indexesArray.splice(ind,1);
     }
 
-    private snap(x: number, y: number)
+    private snap(x: number, y: number): [number, number]
     {
+        if (!this.snapToGrid) return [x, y];
+
         switch(this.gridMode)
         {
             case(grid.square):
@@ -582,72 +676,20 @@ class visualTensor
         return [x,y];
     }
 
-    private addClick(x: number, y: number, dragging: boolean)
-    {
-        if (this.snapToGrid) [x,y] = this.snap(x,y);
-
-        switch(this.mode)
-        {
-            case mode.draw:
-            {
-                if (!dragging && !this.selectedTensor.isSelected)
-                {
-                    this.createTensor(x,y);
-                }
-                else
-                {
-                    let t = this.createTensor(x,y);
-                    t.shape.setAttribute("class","point");
-                    t.shape.setAttribute("id","point");
-                    t.shape.setAttribute("r","4");
-                    t.shape.setAttribute("stroke","rgb(255,255,255)");
-                    t.shape.setAttribute("fill","rgb(230,230,230)");
-                    t.text.setAttribute("dx","10");
-                    //t.text.textContent = String("");
-                    this.addTensorClick(t);
-                }
-                break;
-            }
-        }
-
-        this.clickX.push(x);
-        this.clickY.push(y);
-        this.clickDrag.push(dragging);
-    }
-
-    private addMove(x: number, y: number)
-    {
-        if (this.snapToGrid) [x,y] = this.snap(x,y);
-
-        switch(this.mode)
-        {
-            case mode.draw:
-            {
-                this.placeholderIndex.line.setAttribute("x2",String(x));
-                this.placeholderIndex.line.setAttribute("y2",String(y));
-                break;
-            }
-            case mode.move:
-            {
-                this.selectedTensor.obj.setPosition(x,y);
-                break;
-            }
-        }
-    }
-
     private clearCanvas()
     {
-        while (this.tensorsGroup.firstChild) this.tensorsGroup.removeChild(this.tensorsGroup.firstChild);
-        while (this.indexesGroup.firstChild) this.indexesGroup.removeChild(this.indexesGroup.firstChild);
-    
+        // Iterate backwards to safely remove items from the arrays
+        while (this.tensorsArray.length > 0) {
+            this.deleteTensor(this.tensorsArray[this.tensorsArray.length - 1], true);
+        }
+
         tensor.counter = 0;
         tensor.pendingIDs = [];
-        this.tensorsArray = [];
 
         index.counter = 0;
         index.pendingIDs = [];
-        this.indexesArray = [];
-
+        
+        this.resetToIdleState();
     }
 
     private clearEventHandler = () =>
@@ -663,7 +705,6 @@ class visualTensor
         {
             case(grid.none):
             {
-                //this.gridGroup.setAttribute("opacity","1");
                 while (this.gridGroup.firstChild) this.gridGroup.removeChild(this.gridGroup.firstChild);
                 this.gridMode = grid.square;
                 this.snapToGrid = true;
@@ -688,7 +729,6 @@ class visualTensor
             }
             case(grid.isometric):
             {
-                //this.gridGroup.setAttribute("opacity","0")
                 while (this.gridGroup.firstChild) this.gridGroup.removeChild(this.gridGroup.firstChild);
                 this.gridMode = grid.none;
                 this.snapToGrid = false;
@@ -699,78 +739,45 @@ class visualTensor
         console.log("toggle the grid to " + grid[this.gridMode]);
     }
 
+    private setMode(newMode: mode) {
+        console.log(`${mode[newMode]} mode selected`);
+        this.currentMode = newMode;
+        this.resetToIdleState(); // Ensure a clean state before changing modes
+
+        if (newMode === mode.move) {
+            this.state = AppState.MOVE_IDLE;
+            this.tensorsArray.forEach((t) => t.text.setAttribute("opacity", "100%"));
+            this.indexesArray.forEach((i) => {
+                i.circle.setAttribute("opacity", "100%");
+                i.text.setAttribute("opacity", "100%");
+            });
+        } else { // mode.draw
+            this.state = AppState.DRAW_IDLE;
+            this.tensorsArray.forEach((t) => t.text.setAttribute("opacity", "0%"));
+            this.indexesArray.forEach((i) => {
+                i.circle.setAttribute("opacity", "0%");
+                i.text.setAttribute("opacity", "0%");
+            });
+        }
+    }
+
     private drawEventHandler = () =>
     {
-        console.log("draw mode selected");
-        this.selectedTensor.isSelected = false;
-        this.selectedIndex.isSelected = false;
-        this.tensorsArray.forEach( (t) => t.text.setAttribute("opacity","0%") )
-        this.indexesArray.forEach( (i) => {i.circle.setAttribute("opacity","0%");
-                                           i.text.setAttribute("opacity","0%")})
-        this.mode = mode.draw;
-        // probably have to add cleaning of variables etc
-    }
-
-    private moveEventHandler = () =>
-    {
-        console.log("move mode selected");
-        this.selectedTensor.isSelected = false;
-        this.selectedIndex.isSelected = false;
-        this.tensorsArray.forEach( (t) => t.text.setAttribute("opacity","100%") )
-        this.indexesArray.forEach( (i) => {i.circle.setAttribute("opacity","100%");
-                                           i.text.setAttribute("opacity","100%")})
-        this.mode = mode.move;
-        // probably have to add cleaning of variables etc
-    }
-
-    private releaseEventHandler = () =>
-    {
-        this.paint = false;
-    }
-
-    private cancelEventHandler = () =>
-    {
-        this.paint = false;
+        this.setMode(mode.draw);
     }
 
     private pressEventHandler = (e: MouseEvent | TouchEvent) =>
     {
-        let mouseX = (e as TouchEvent).changedTouches ?
-                     (e as TouchEvent).changedTouches[0].clientX :
-                     (e as MouseEvent).clientX;
-        let mouseY = (e as TouchEvent).changedTouches ?
-                     (e as TouchEvent).changedTouches[0].clientY :
-                     (e as MouseEvent).clientY;
-
-        mouseX -= this.offsetX;
-        mouseY -= this.offsetY;
-
-        //console.log("mouse press event offseted in : " + mouseX + " " + mouseY);
-
-        this.paint = true;
-        this.addClick(mouseX, mouseY, false);
-    }
-
-    private dragEventHandler = (e: MouseEvent | TouchEvent) =>
-    {
-        let mouseX = (e as TouchEvent).changedTouches ?
-                     (e as TouchEvent).changedTouches[0].pageX :
-                     (e as MouseEvent).pageX;
-        let mouseY = (e as TouchEvent).changedTouches ?
-                     (e as TouchEvent).changedTouches[0].pageY :
-                     (e as MouseEvent).pageY;
-
-        mouseX -= this.offsetX;
-        mouseY -= this.offsetY;
-
-        if (this.selectedTensor.isSelected) {
-            this.addMove(mouseX,mouseY);
-            //console.log("mouse dragging: " + mouseX + " " + mouseY);
+        this.lastEvent = e; // Store the event for getting coordinates later
+        if (e.target === this.svgElement) {
+            this.pressBackgroundHandler();
         }
-
-        e.preventDefault();
     }
 
+    private moveEventHandler = () =>
+    {
+        this.setMode(mode.move);
+    }
 }
 
 new visualTensor();
