@@ -81,6 +81,7 @@ class tensor {
         this.legsRefs = [];
         this.whichPoint = [];
         this.isPoint = false;
+        this.justCreated = false;
         this.createShapetext();
         return this;
     }
@@ -181,6 +182,11 @@ class visualTensor {
         this.pressTensorEventHandler = (e, t) => {
             e.stopPropagation();
             this.lastEvent = e;
+            // Grace period for new tensors on touch devices to prevent instant selection.
+            if (t.justCreated) {
+                t.justCreated = false;
+                return;
+            }
             switch (this.state) {
                 case AppState.MOVE_IDLE:
                     // Start dragging a tensor
@@ -522,6 +528,7 @@ class visualTensor {
     createTensor(x, y, isPoint = false) {
         let [snappedX, snappedY] = this.snap(x, y);
         let newTensor = new tensor(snappedX, snappedY);
+        newTensor.justCreated = true; // Set the flag on creation
         if (isPoint) {
             newTensor.isPoint = true;
             newTensor.shape.setAttribute("r", "4");

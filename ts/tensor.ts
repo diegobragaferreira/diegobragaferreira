@@ -109,6 +109,7 @@ class tensor
     public legsRefs: Array<index> = [];
     public whichPoint: Array<boolean> = [];
     public isPoint: boolean = false;
+    public justCreated: boolean = false;
 
     constructor(public posX: number, public posY: number, public radius: number = 20)
     {
@@ -412,6 +413,12 @@ class visualTensor
         e.stopPropagation();
         this.lastEvent = e;
 
+        // Grace period for new tensors on touch devices to prevent instant selection.
+        if (t.justCreated) {
+            t.justCreated = false;
+            return;
+        }
+
         switch (this.state) {
             case AppState.MOVE_IDLE:
                 // Start dragging a tensor
@@ -574,6 +581,7 @@ class visualTensor
     {
         let [snappedX, snappedY] = this.snap(x, y);
         let newTensor = new tensor(snappedX, snappedY);
+        newTensor.justCreated = true; // Set the flag on creation
         if (isPoint) {
             newTensor.isPoint = true;
             newTensor.shape.setAttribute("r", "4");
