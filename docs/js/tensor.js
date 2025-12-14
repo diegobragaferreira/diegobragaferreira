@@ -609,6 +609,8 @@ class visualTensor {
         this.attachPanListeners(); // Use the same listeners, but they'll call pinchZoomMoveHandler
     }
     attachPanListeners() {
+        if (this.boundCanvasPanMoveHandler)
+            return;
         this.boundCanvasPanMoveHandler = (e) => this.canvasPanMoveHandler(e);
         this.boundCanvasPanReleaseHandler = (e) => this.canvasPanReleaseHandler(e);
         window.addEventListener("mousemove", this.boundCanvasPanMoveHandler);

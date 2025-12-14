@@ -607,6 +607,8 @@ class visualTensor
     }
 
     private attachPanListeners() {
+        if (this.boundCanvasPanMoveHandler) return;
+
         this.boundCanvasPanMoveHandler = (e: MouseEvent | TouchEvent) => this.canvasPanMoveHandler(e);
         this.boundCanvasPanReleaseHandler = (e: MouseEvent | TouchEvent) => this.canvasPanReleaseHandler(e);
 
