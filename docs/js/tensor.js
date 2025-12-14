@@ -151,6 +151,9 @@ var AppState;
     // Draw Mode States
     AppState[AppState["DRAW_IDLE"] = 2] = "DRAW_IDLE";
     AppState[AppState["DRAW_PREVIEWING"] = 3] = "DRAW_PREVIEWING";
+    // Canvas Interaction States
+    AppState[AppState["CANVAS_PANNING"] = 4] = "CANVAS_PANNING";
+    AppState[AppState["CANVAS_PINCH_ZOOMING"] = 5] = "CANVAS_PINCH_ZOOMING";
 })(AppState || (AppState = {}));
 // all types of grids
 // superposed grid in future:
@@ -168,6 +171,8 @@ class visualTensor {
         this.gridSize = 50;
         this.snapToGrid = false;
         this.gridMode = grid.none;
+        this.defs = document.createElementNS("http://www.w3.org/2000/svg", "defs");
+        this.contentGroup = document.createElementNS("http://www.w3.org/2000/svg", "g");
         this.gridGroup = document.createElementNS("http://www.w3.org/2000/svg", "g");
         this.indexesGroup = document.createElementNS("http://www.w3.org/2000/svg", "g");
         this.tensorsGroup = document.createElementNS("http://www.w3.org/2000/svg", "g");
@@ -177,6 +182,10 @@ class visualTensor {
         this.state = AppState.DRAW_IDLE;
         this.lastEvent = new MouseEvent('mousedown');
         this.currentMode = mode.draw;
+        // --- Pan & Zoom Properties ---
+        this.currentScale = 1;
+        this.translateX = 0;
+        this.translateY = 0;
         this.pressTensorEventHandlerMap = new Map();
         // --- State-based Event Handlers ---
         this.pressTensorEventHandler = (e, t) => {
@@ -237,6 +246,67 @@ class visualTensor {
                 this.placeholderIndex.moveP2(snapped[0], snapped[1]);
             }
         };
+        // --- Pan & Zoom Handlers ---
+        this.wheelEventHandler = (e) => {
+            e.preventDefault(); // Prevent page scrolling
+            e.stopPropagation();
+            const zoomPoint = {
+                x: e.clientX - this.svgElement.getBoundingClientRect().left,
+                y: e.clientY - this.svgElement.getBoundingClientRect().top
+            }; // Screen coords relative to SVG
+            const zoomFactor = e.deltaY < 0 ? 1.1 : 1 / 1.1; // Zoom in or out
+            this.applyZoom(zoomFactor, zoomPoint);
+        };
+        this.canvasPanMoveHandler = (e) => {
+            if (this.state === AppState.CANVAS_PINCH_ZOOMING && window.TouchEvent && e instanceof TouchEvent && e.touches.length === 2) {
+                e.preventDefault();
+                const touch1 = e.touches[0];
+                const touch2 = e.touches[1];
+                const currentPinchDistance = Math.hypot(touch2.clientX - touch1.clientX, touch2.clientY - touch1.clientY);
+                if (this.initialPinchDistance && this.initialPinchCenter) {
+                    const zoomFactor = currentPinchDistance / this.initialPinchDistance;
+                    this.applyZoom(zoomFactor, this.initialPinchCenter);
+                    this.initialPinchDistance = currentPinchDistance;
+                }
+                return;
+            }
+            // If we are in an idle state, check if we should start panning
+            if ((this.state === AppState.DRAW_IDLE || this.state === AppState.MOVE_IDLE) && this.panStartPoint) {
+                const { clientX, clientY } = (e instanceof MouseEvent) ? e : e.touches[0];
+                const dx = clientX - this.panStartPoint.x;
+                const dy = clientY - this.panStartPoint.y;
+                if (dx * dx + dy * dy > 25) { // Drag threshold
+                    this.state = AppState.CANVAS_PANNING;
+                    this.svgElement.style.cursor = 'grabbing'; // Add cursor feedback
+                }
+            }
+            // If we are panning, update the translation
+            if (this.state === AppState.CANVAS_PANNING) {
+                e.preventDefault();
+                const { clientX, clientY } = (e instanceof MouseEvent) ? e : e.touches[0];
+                if (this.panStartPoint) {
+                    const dx = clientX - this.panStartPoint.x;
+                    const dy = clientY - this.panStartPoint.y;
+                    this.translateX += dx;
+                    this.translateY += dy;
+                    this.applyTransform();
+                    this.panStartPoint = { x: clientX, y: clientY };
+                }
+            }
+        };
+        this.canvasPanReleaseHandler = (e) => {
+            this.detachPanListeners(); // Always detach
+            this.svgElement.style.cursor = 'default';
+            if (this.state === AppState.CANVAS_PANNING || this.state === AppState.CANVAS_PINCH_ZOOMING) {
+                this.resetToIdleState();
+            }
+            else if (this.state === AppState.DRAW_IDLE) {
+                // If we are here, the state was never changed to PANNING, so it was a click.
+                this.pressBackgroundHandler();
+            }
+            // If state was MOVE_IDLE, a click does nothing.
+            this.panStartPoint = undefined; // Always clear
+        };
         // --- Original Methods (Refactored or Kept) ---
         this.pressIndexEventHandlerMap = new Map();
         this.clearEventHandler = () => {
@@ -248,50 +318,59 @@ class visualTensor {
             switch (this.gridMode) {
                 case (grid.none):
                     {
-                        while (this.gridGroup.firstChild)
-                            this.gridGroup.removeChild(this.gridGroup.firstChild);
                         this.gridMode = grid.square;
                         this.snapToGrid = true;
-                        this.drawGrid();
                         break;
                     }
                 case (grid.square):
                     {
-                        while (this.gridGroup.firstChild)
-                            this.gridGroup.removeChild(this.gridGroup.firstChild);
                         this.gridMode = grid.diamond;
                         this.snapToGrid = true;
-                        this.drawGrid();
                         break;
                     }
                 case (grid.diamond):
                     {
-                        while (this.gridGroup.firstChild)
-                            this.gridGroup.removeChild(this.gridGroup.firstChild);
                         this.gridMode = grid.isometric;
                         this.snapToGrid = true;
-                        this.drawGrid();
                         break;
                     }
                 case (grid.isometric):
                     {
-                        while (this.gridGroup.firstChild)
-                            this.gridGroup.removeChild(this.gridGroup.firstChild);
                         this.gridMode = grid.none;
                         this.snapToGrid = false;
-                        this.drawGrid();
                         break;
                     }
             }
+            this.drawGrid();
             console.log("toggle the grid to " + grid[this.gridMode]);
         };
         this.drawEventHandler = () => {
             this.setMode(mode.draw);
         };
         this.pressEventHandler = (e) => {
-            this.lastEvent = e; // Store the event for getting coordinates later
-            if (e.target === this.svgElement) {
+            this.lastEvent = e;
+            if (window.TouchEvent && e instanceof TouchEvent) {
+                e.preventDefault();
+            }
+            // Check for multi-touch (pinch-to-zoom) first
+            if (window.TouchEvent && e instanceof TouchEvent && e.touches.length === 2) {
+                this.startPinchZoom(e);
+                return;
+            }
+            // If we are here, it's a single-point press.
+            // Since interactive elements stop propagation, any event here is a background interaction.
+            if (this.state === AppState.DRAW_PREVIEWING) {
+                // This is a definite click to create a dangling leg. No drag/pan involved.
                 this.pressBackgroundHandler();
+                return;
+            }
+            if (this.state === AppState.DRAW_IDLE || this.state === AppState.MOVE_IDLE) {
+                // This could be a click (to create in draw mode) or a drag (to pan).
+                // Set up listeners to determine which it is.
+                const { clientX, clientY } = (e instanceof MouseEvent) ? e : e.touches[0];
+                this.panStartPoint = { x: clientX, y: clientY };
+                this.svgElement.style.cursor = 'grab';
+                this.attachPanListeners();
             }
         };
         this.moveEventHandler = () => {
@@ -311,11 +390,14 @@ class visualTensor {
         // These will be updated on pointer events to account for scroll
         this.offsetX = 0;
         this.offsetY = 0;
+        this.svgElement.appendChild(this.defs);
         //if (!this.snapToGrid) this.gridGroup.setAttribute("opacity","0");
         this.drawGrid();
-        this.svgElement.appendChild(this.gridGroup);
-        this.svgElement.appendChild(this.indexesGroup);
-        this.svgElement.appendChild(this.tensorsGroup);
+        this.svgElement.appendChild(this.contentGroup); // Append the new content group
+        this.contentGroup.appendChild(this.gridGroup); // Grid also goes into the content group
+        this.contentGroup.appendChild(this.indexesGroup);
+        this.contentGroup.appendChild(this.tensorsGroup);
+        this.contentGroup.setAttribute("id", "content-group");
         this.gridGroup.setAttribute("id", "grid");
         this.indexesGroup.setAttribute("id", "indexes");
         this.tensorsGroup.setAttribute("id", "tensors");
@@ -323,89 +405,89 @@ class visualTensor {
     }
     getPointerPosition(e) {
         const svgRect = this.svgElement.getBoundingClientRect();
-        let pointerX = 0;
-        let pointerY = 0;
-        if (window.TouchEvent && e instanceof TouchEvent && e.touches.length > 0) {
-            pointerX = e.touches[0].clientX;
-            pointerY = e.touches[0].clientY;
+        let clientX = 0;
+        let clientY = 0;
+        if (window.TouchEvent && e instanceof TouchEvent) {
+            if (e.touches.length > 0) {
+                clientX = e.touches[0].clientX;
+                clientY = e.touches[0].clientY;
+            }
+            else {
+                // No touches, return last known position or handle error
+                return { x: 0, y: 0 }; // Or throw an error, depending on desired strictness
+            }
         }
         else {
-            pointerX = e.clientX;
-            pointerY = e.clientY;
+            clientX = e.clientX;
+            clientY = e.clientY;
         }
+        // Convert screen coordinates to SVG element coordinates
+        const svgX = clientX - svgRect.left;
+        const svgY = clientY - svgRect.top;
+        // Apply inverse of current pan and zoom to get untransformed content coordinates
+        const untransformedX = (svgX - this.translateX) / this.currentScale;
+        const untransformedY = (svgY - this.translateY) / this.currentScale;
         return {
-            x: pointerX - svgRect.left,
-            y: pointerY - svgRect.top
+            x: untransformedX,
+            y: untransformedY
         };
     }
     drawGrid() {
+        // Clear existing grid and defs
+        while (this.gridGroup.firstChild)
+            this.gridGroup.removeChild(this.gridGroup.firstChild);
+        while (this.defs.firstChild)
+            this.defs.removeChild(this.defs.firstChild);
+        if (this.gridMode === grid.none)
+            return;
+        // Create Pattern
+        let pattern = document.createElementNS("http://www.w3.org/2000/svg", "pattern");
+        pattern.setAttribute("id", "gridPattern");
+        pattern.setAttribute("width", String(this.gridSize));
+        pattern.setAttribute("height", String(this.gridSize));
+        pattern.setAttribute("patternUnits", "userSpaceOnUse");
+        // Determine transform based on mode
+        let transform = "";
         switch (this.gridMode) {
-            case (grid.none):
-                {
-                    break;
-                }
-            case (grid.square):
-                {
-                    for (let i = this.gridSize; i < this.height; i += this.gridSize)
-                        this.drawGridLine(this.gridGroup, 0, this.width, i, i);
-                    for (let i = this.gridSize; i < this.width; i += this.gridSize)
-                        this.drawGridLine(this.gridGroup, i, i, 0, this.height);
-                    break;
-                }
-            case (grid.diamond):
-            case (grid.isometric):
-                {
-                    class point {
-                        constructor(x, y) {
-                            this.x = x;
-                            this.y = y;
-                        }
-                    }
-                    let upperFence = [];
-                    let rightFence = [];
-                    let bottomFence = [];
-                    let leftFence = [];
-                    let ori = new point(0, 0);
-                    let tor = new point(this.width, 0);
-                    let bol = new point(0, this.height);
-                    let end = new point(this.width, this.height);
-                    let persp = (this.gridMode == grid.diamond) ? 1 : 2;
-                    for (let i = this.gridSize * persp; i < this.width; i += this.gridSize * persp)
-                        upperFence.push(new point(i, 0));
-                    for (let i = this.gridSize; i < this.height; i += this.gridSize)
-                        rightFence.push(new point(this.width, i));
-                    for (let i = this.gridSize; i < this.height; i += this.gridSize)
-                        leftFence.push(new point(0, i));
-                    for (let i = this.gridSize * persp; i < this.width; i += this.gridSize * persp)
-                        bottomFence.push(new point(i, this.height));
-                    let ur = upperFence.concat([tor].concat(rightFence));
-                    let lb = leftFence.concat([bol].concat(bottomFence));
-                    let lu = leftFence.reverse().concat([ori].concat(upperFence));
-                    let br = bottomFence.concat([end].concat(rightFence.reverse()));
-                    for (let i = 0; i < upperFence.length + rightFence.length + 1; i++) {
-                        this.drawGridLine(this.gridGroup, ur[i].x, lb[i].x, ur[i].y, lb[i].y);
-                        this.drawGridLine(this.gridGroup, lu[i].x, br[i].x, lu[i].y, br[i].y);
-                    }
-                    break;
-                }
+            case grid.diamond:
+                transform = "rotate(45)";
+                break;
+            case grid.isometric:
+                transform = "scale(2 1) rotate(45)";
+                break;
+            case grid.square:
+            default:
+                transform = "";
+                break;
         }
-    }
-    drawGridLine(gridGroup, x1, x2, y1, y2) {
-        let line = document.createElementNS("http://www.w3.org/2000/svg", "line");
-        line.setAttribute("id", "dashed-line");
-        line.setAttribute("x1", String(x1));
-        line.setAttribute("x2", String(x2));
-        line.setAttribute("y1", String(y1));
-        line.setAttribute("y2", String(y2));
-        line.setAttribute("pointer-events", "none"); // Allow clicks to pass through the grid
-        line.setAttribute("style", "stroke:rgb(192,192,192);stroke-width:1;stroke-dasharray:6 4");
-        gridGroup.appendChild(line);
+        if (transform) {
+            pattern.setAttribute("patternTransform", transform);
+        }
+        let path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        path.setAttribute("id", "gridPath");
+        path.setAttribute("d", `M ${this.gridSize} 0 L 0 0 0 ${this.gridSize}`);
+        path.setAttribute("fill", "none");
+        path.setAttribute("stroke", "rgb(150,150,150)");
+        path.setAttribute("stroke-width", String(2 / this.currentScale));
+        path.setAttribute("stroke-dasharray", "6 4");
+        pattern.appendChild(path);
+        this.defs.appendChild(pattern);
+        // Create Large Rect
+        let rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+        rect.setAttribute("width", "200000");
+        rect.setAttribute("height", "200000");
+        rect.setAttribute("x", "-100000");
+        rect.setAttribute("y", "-100000");
+        rect.setAttribute("fill", "url(#gridPattern)");
+        rect.setAttribute("pointer-events", "none");
+        this.gridGroup.appendChild(rect);
     }
     createUserEvents() {
         this.svgElement.addEventListener("mousedown", this.pressEventHandler);
         // The new listener for the connection preview, which does not require holding the mouse button.
         this.svgElement.addEventListener("mousemove", this.previewMoveHandler);
         this.svgElement.addEventListener("touchstart", this.pressEventHandler);
+        this.svgElement.addEventListener("wheel", this.wheelEventHandler, { passive: false });
         const clearBtn = document.getElementById('clearBtn');
         if (clearBtn)
             clearBtn.addEventListener("click", this.clearEventHandler);
@@ -454,6 +536,7 @@ class visualTensor {
                 break;
             case AppState.MOVE_IDLE:
                 // Future: could initiate canvas panning here. For now, does nothing.
+                // This is now handled by the main pressEventHandler, which checks for background clicks.
                 break;
         }
     }
@@ -475,6 +558,7 @@ class visualTensor {
     }
     // --- Utility and Helper Functions ---
     resetToIdleState() {
+        this.svgElement.style.cursor = 'default';
         if (this.activeTensor) {
             this.activeTensor.shape.setAttribute("stroke-width", "1");
         }
@@ -483,6 +567,10 @@ class visualTensor {
         }
         this.activeTensor = undefined;
         this.placeholderIndex = undefined;
+        // Clear pan/zoom specific temporary states
+        this.panStartPoint = undefined;
+        this.initialPinchDistance = undefined;
+        this.initialPinchCenter = undefined;
         // Determine the correct idle state based on the current mode
         this.state = this.currentMode === mode.move ? AppState.MOVE_IDLE : AppState.DRAW_IDLE;
     }
@@ -509,10 +597,61 @@ class visualTensor {
         this.boundDragHandler = undefined;
         this.boundReleaseHandler = undefined;
     }
+    startPinchZoom(e) {
+        this.state = AppState.CANVAS_PINCH_ZOOMING;
+        const touch1 = e.touches[0];
+        const touch2 = e.touches[1];
+        this.initialPinchDistance = Math.hypot(touch2.clientX - touch1.clientX, touch2.clientY - touch1.clientY);
+        this.initialPinchCenter = {
+            x: (touch1.clientX + touch2.clientX) / 2 - this.svgElement.getBoundingClientRect().left,
+            y: (touch1.clientY + touch2.clientY) / 2 - this.svgElement.getBoundingClientRect().top
+        };
+        this.attachPanListeners(); // Use the same listeners, but they'll call pinchZoomMoveHandler
+    }
+    attachPanListeners() {
+        this.boundCanvasPanMoveHandler = (e) => this.canvasPanMoveHandler(e);
+        this.boundCanvasPanReleaseHandler = (e) => this.canvasPanReleaseHandler(e);
+        window.addEventListener("mousemove", this.boundCanvasPanMoveHandler);
+        window.addEventListener("mouseup", this.boundCanvasPanReleaseHandler);
+        window.addEventListener("touchmove", this.boundCanvasPanMoveHandler, { passive: false });
+        window.addEventListener("touchend", this.boundCanvasPanReleaseHandler);
+    }
+    detachPanListeners() {
+        if (this.boundCanvasPanMoveHandler) {
+            window.removeEventListener("mousemove", this.boundCanvasPanMoveHandler);
+            window.removeEventListener("touchmove", this.boundCanvasPanMoveHandler);
+        }
+        if (this.boundCanvasPanReleaseHandler) {
+            window.removeEventListener("mouseup", this.boundCanvasPanReleaseHandler);
+            window.removeEventListener("touchend", this.boundCanvasPanReleaseHandler);
+        }
+        this.boundCanvasPanMoveHandler = undefined;
+        this.boundCanvasPanReleaseHandler = undefined;
+    }
+    applyZoom(zoomFactor, zoomPoint) {
+        const newScale = this.currentScale * zoomFactor;
+        // Limit zoom to reasonable bounds (e.g., 0.1x to 10x)
+        if (newScale < 0.1 || newScale > 10) {
+            return;
+        }
+        // Adjust translation to keep the zoomPoint fixed relative to the content
+        this.translateX = zoomPoint.x - (zoomPoint.x - this.translateX) * (newScale / this.currentScale);
+        this.translateY = zoomPoint.y - (zoomPoint.y - this.translateY) * (newScale / this.currentScale);
+        this.currentScale = newScale;
+        this.applyTransform();
+    }
+    applyTransform() {
+        this.contentGroup.setAttribute("transform", `translate(${this.translateX} ${this.translateY}) scale(${this.currentScale})`);
+        const gridPath = this.defs.querySelector("#gridPath");
+        if (gridPath) {
+            gridPath.setAttribute("stroke-width", String(2 / this.currentScale));
+        }
+    }
     createIndexEvents(i) {
         // In draw mode, clicking an index deletes it.
-        const clickHandler = () => {
-            if (this.currentMode === mode.draw) {
+        const clickHandler = (e) => {
+            e.stopPropagation(); // Prevent the event from bubbling up to the SVG background
+            if (this.currentMode === mode.draw) { // Only allow deletion in draw mode
                 this.deleteIndex(i, true);
                 this.resetToIdleState(); // Reset state after deletion
             }
@@ -605,16 +744,34 @@ class visualTensor {
                 }
             case (grid.diamond):
                 {
-                    // this is not strictly right...
-                    x = Math.round(2 * x / (this.gridSize)) * (this.gridSize / 2); ///2 //+ Math.round(x/(this.gridSize/2));
-                    y = Math.round(2 * y / (this.gridSize)) * (this.gridSize / 2); ///2 //+ Math.round(y/(this.gridSize/2));    
+                    // Transform to grid space (Rotate -45)
+                    const invSqrt2 = Math.SQRT1_2;
+                    let u = (x + y) * invSqrt2;
+                    let v = (y - x) * invSqrt2;
+                    // Snap
+                    u = Math.round(u / this.gridSize) * this.gridSize;
+                    v = Math.round(v / this.gridSize) * this.gridSize;
+                    // Transform back (Rotate 45)
+                    x = (u - v) * invSqrt2;
+                    y = (u + v) * invSqrt2;
                     break;
                 }
             case (grid.isometric):
                 {
-                    // this is not strictly right...
-                    x = Math.round(x / (this.gridSize)) * (this.gridSize); ///2 //+ Math.round(x/(this.gridSize/2));
-                    y = Math.round(2 * y / (this.gridSize)) * (this.gridSize / 2); ///2 //+ Math.round(y/(this.gridSize/2));    
+                    const invSqrt2 = Math.SQRT1_2;
+                    // Inverse: Scale(0.5, 1) then Rotate(-45)
+                    let sx = x * 0.5;
+                    let sy = y;
+                    let u = (sx + sy) * invSqrt2;
+                    let v = (sy - sx) * invSqrt2;
+                    // Snap
+                    u = Math.round(u / this.gridSize) * this.gridSize;
+                    v = Math.round(v / this.gridSize) * this.gridSize;
+                    // Forward: Rotate(45) then Scale(2, 1)
+                    let rx = (u - v) * invSqrt2;
+                    let ry = (u + v) * invSqrt2;
+                    x = rx * 2;
+                    y = ry;
                     break;
                 }
         }

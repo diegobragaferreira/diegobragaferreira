@@ -15,26 +15,35 @@ class SaveSVG
             return;
         }
 
-        let bbox = svgref.getBBox();
-        console.log("bouding box: ",bbox.x,bbox.y,bbox.width,bbox.height);
-        let svg = svgref.cloneNode(true) as HTMLElement;
-        svg.setAttribute("viewBox",String(bbox.x-1)+" "+String(bbox.y-1)+" "+String(bbox.width+2)+" "+String(bbox.height+2));
-        svg.setAttribute("width",String(bbox.width+2));
-        svg.setAttribute("height",String(bbox.height+2));
+        // Get the content group that is being transformed
+        const contentGroup = svgref.querySelector('#content-group') as SVGGElement | null;
+        if (!contentGroup) {
+            console.error("Content group not found for saving.");
+            return;
+        }
+
+        // Get the bounding box of the content itself, ignoring the transform
+        const bbox = contentGroup.getBBox();
+
+        // Clone the main SVG to keep its structure and definitions (<defs>)
+        let svgClone = svgref.cloneNode(true) as SVGSVGElement;
+
+        // Find the cloned content group
+        const clonedContentGroup = svgClone.querySelector('#content-group') as SVGGElement | null;
+        if (clonedContentGroup) {
+            // Remove the transform attribute from the clone, as we'll use viewBox to frame it.
+            clonedContentGroup.removeAttribute('transform');
+        }
+
+        // Add a small padding to the bounding box
+        const padding = 10;
+        svgClone.setAttribute("viewBox", `${bbox.x - padding} ${bbox.y - padding} ${bbox.width + padding * 2} ${bbox.height + padding * 2}`);
+        svgClone.setAttribute("width", String(bbox.width + padding * 2));
+        svgClone.setAttribute("height", String(bbox.height + padding * 2));
 
         let serializer = new XMLSerializer();
-        let source = serializer.serializeToString(svg);
+        let source = serializer.serializeToString(svgClone);
         console.log(source);
-
-        //add name spaces.
-        //if(!source.match(/^<svg[^>]+xmlns="http\:\/\/www\.w3\.org\/2000\/svg"/)){
-        //    source = source.replace(/^<svg/, '<svg xmlns="http://www.w3.org/2000/svg"');
-        //}
-        //if(!source.match(/^<svg[^>]+"http\:\/\/www\.w3\.org\/1999\/xlink"/)){
-        //    source = source.replace(/^<svg/, '<svg xmlns:xlink="http://www.w3.org/1999/xlink"');
-        //}
-
-        //document.getElementById("svgcode").innerText = source;
 
         source = '<?xml version="1.0" standalone="no"?>\r\n' + source;
 
